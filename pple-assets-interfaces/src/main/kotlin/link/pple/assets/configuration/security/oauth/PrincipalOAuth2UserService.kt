@@ -1,8 +1,12 @@
 package link.pple.assets.configuration.security.oauth
 
+import link.pple.assets.configuration.security.PrincipalDetails
+import link.pple.assets.domain.account.entity.Account
+import link.pple.assets.domain.account.service.AccountCommand
+import link.pple.assets.domain.account.service.AccountDefinition
+import link.pple.assets.domain.account.service.AccountQuery
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
-import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
 
 /**
@@ -14,7 +18,11 @@ import org.springframework.stereotype.Service
  *      - (Optional) 회원가입 시 필요하다면 추가 정보 입력 받기
  */
 @Service
-class PrincipalOAuth2UserService : DefaultOAuth2UserService() {
+class PrincipalOAuth2UserService(
+    private val oAuth2ProviderAdjuster: OAuth2ProviderAdjuster,
+    private val accountQuery: AccountQuery,
+    private val accountCommand: AccountCommand
+) : DefaultOAuth2UserService() {
 
     /**
      * 1. Google Login Button Click
@@ -24,18 +32,35 @@ class PrincipalOAuth2UserService : DefaultOAuth2UserService() {
      * 5. request AccessToken
      * 4, 5번을 OAuth2-Client 에서 해줌
      */
-    override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
-        println(userRequest.accessToken.tokenValue)
-        println(userRequest.clientRegistration)
+    override fun loadUser(userRequest: OAuth2UserRequest): PrincipalDetails {
 
-        val oAuth2User = super.loadUser(userRequest)
-        println(oAuth2User.attributes)
+        val clientName: String = userRequest.clientRegistration.clientName
+        val attributes: Map<String, Any> = super.loadUser(userRequest).attributes
 
-        val provider: String = userRequest.clientRegistration.clientId // GOOGLE
-        val providerId: String = oAuth2User.getAttribute<String>("sub") ?: "" // not-null 추가
-        val email: String = oAuth2User.getAttribute<String>("email") ?: "" // not-null 추가
+        val oAuth2Profile = oAuth2ProviderAdjuster.adjust(
+            clientName = clientName,
+            attributes = attributes
+        )
 
+        val account = accountQuery.getByEmailOrNull(oAuth2Profile.email)
+            ?: createNewAccount(oAuth2Profile = oAuth2Profile)
 
-        return oAuth2User
+        return PrincipalDetails(
+            account = account,
+            attributes = attributes
+        )
+    }
+
+    private fun createNewAccount(oAuth2Profile: OAuth2Profile): Account {
+        val definition = AccountDefinition(
+            key = Account.ProviderKey(
+                type = oAuth2Profile.type,
+                id = oAuth2Profile.id
+            ),
+            email = oAuth2Profile.email,
+            displayName = oAuth2Profile.displayName
+        )
+
+        return accountCommand.create(definition = definition)
     }
 }
