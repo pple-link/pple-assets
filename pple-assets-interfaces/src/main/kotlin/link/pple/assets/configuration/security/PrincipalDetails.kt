@@ -1,6 +1,7 @@
 package link.pple.assets.configuration.security
 
 import link.pple.assets.domain.account.entity.Account
+import link.pple.assets.domain.configuration.jpa.requiredId
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.oauth2.core.user.OAuth2User
 
@@ -17,15 +18,16 @@ class PrincipalDetails(
     private val attributes: Map<String, Any>
 ) : OAuth2User {
 
+    val identifier: String
+        get() = account.requiredId.toString()
+
     override fun getName() = account.email
 
     override fun getAttributes() = this.attributes
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
-        return mutableListOf<GrantedAuthority>().also { collection ->
-            collection.add(GrantedAuthority {
-                account.role.name
-            })
-        }
+        return listOf(
+            GrantedAuthority { account.role.name }
+        )
     }
 }

@@ -12,4 +12,8 @@ class AccountQuery(
     fun getByEmailOrNull(email: String): Account? {
         return accountRepository.findByEmail(email)
     }
+
+    fun findById(id: Long): Account {
+        return accountRepository.findById(id).get()
+    }
 }

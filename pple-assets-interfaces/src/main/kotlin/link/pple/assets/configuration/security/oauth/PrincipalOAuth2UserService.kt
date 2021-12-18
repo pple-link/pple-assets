@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class PrincipalOAuth2UserService(
-    private val oAuth2ProviderAdjuster: OAuth2ProviderAdjuster,
+    private val oAuth2ProfileAdjuster: OAuth2ProfileAdjuster,
     private val accountQuery: AccountQuery,
     private val accountCommand: AccountCommand
 ) : DefaultOAuth2UserService() {
@@ -37,7 +37,7 @@ class PrincipalOAuth2UserService(
         val clientName: String = userRequest.clientRegistration.clientName
         val attributes: Map<String, Any> = super.loadUser(userRequest).attributes
 
-        val oAuth2Profile = oAuth2ProviderAdjuster.adjust(
+        val oAuth2Profile = oAuth2ProfileAdjuster.adjust(
             clientName = clientName,
             attributes = attributes
         )

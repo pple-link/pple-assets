@@ -1,12 +1,15 @@
 package link.pple.assets
 
+import link.pple.assets.configuration.AppProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @SpringBootApplication
+@EnableConfigurationProperties(AppProperties::class)
 class PpleAssetsApplication
 
 fun main(args: Array<String>) {
