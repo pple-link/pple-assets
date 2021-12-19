@@ -1,0 +1,5 @@
+debug: true
+
+springdoc:
+  api-docs:
+    enabled: true

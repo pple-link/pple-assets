@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "springdoc.api-docs.enabled",
+      "type": "java.lang.String",
+      "description": "Description for springdoc.api-docs.enabled."
+    },
+    {
+      "name": "springdoc.paths-to-match",
+      "type": "java.lang.String",
+      "description": "Description for springdoc.paths-to-match."
+    },
+    {
+      "name": "springdoc.swagger-ui.doc-expansion",
+      "type": "java.lang.String",
+      "description": "Description for springdoc.swagger-ui.doc-expansion."
+    }
+  ]
+}
