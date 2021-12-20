@@ -9,6 +9,7 @@ import link.pple.assets.domain.account.repository.AccountRepository
 import link.pple.assets.domain.account.service.AccountQuery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.data.repository.findByIdOrNull
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
@@ -63,7 +64,7 @@ internal class AccountQueryTest {
     fun `id 로 Account 를 조회할 수 있다`() {
         // given
         val id = 42L
-        every { accountRepository.findById(id).get() } returns Account.create(
+        every { accountRepository.findByIdOrNull(id) } returns Account.create(
             providerType = Account.ProviderType.KAKAO,
             providerAccountId = "1234",
             email = "sun@example.com",
@@ -71,7 +72,7 @@ internal class AccountQueryTest {
         )
 
         // when
-        val actual = sut.getById(id = id)
+        val actual = sut.getById(accountId = id)
 
         // then
         expectThat(actual) {
