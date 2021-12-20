@@ -53,8 +53,13 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         runtimeOnly("mysql:mysql-connector-java")
 
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
-        testImplementation("org.springframework.security:spring-security-test")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+        testImplementation("io.mockk:mockk:1.12.1")
+        testImplementation("org.springframework.boot:spring-boot-starter-test") {
+            exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+        }
+        testImplementation("io.strikt:strikt-core:0.33.0")
     }
 
     tasks.withType<KotlinCompile> {

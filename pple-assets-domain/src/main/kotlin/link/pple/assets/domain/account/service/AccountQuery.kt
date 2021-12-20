@@ -13,7 +13,7 @@ class AccountQuery(
         return accountRepository.findByEmail(email)
     }
 
-    fun findById(id: Long): Account {
+    fun getById(id: Long): Account {
         return accountRepository.findById(id).get()
     }
 }
