@@ -55,6 +55,8 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         runtimeOnly("mysql:mysql-connector-java")
 
+        implementation("com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.6")
+
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
         testImplementation("io.mockk:mockk:1.12.1")
