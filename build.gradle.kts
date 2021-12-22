@@ -8,6 +8,8 @@ plugins {
     kotlin("plugin.spring")
     kotlin("plugin.jpa") apply false
     kotlin("kapt")
+
+    id("com.google.cloud.tools.jib") version "3.1.4" apply false
 }
 
 configurations {
@@ -33,8 +35,8 @@ subprojects {
     apply(plugin = "kotlin-kapt")
     apply(plugin = "kotlin-spring")
 
-    java.sourceCompatibility = JavaVersion.VERSION_17
-    java.targetCompatibility = JavaVersion.VERSION_17
+    java.sourceCompatibility = JavaVersion.VERSION_11
+    java.targetCompatibility = JavaVersion.VERSION_11
 
     the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
         val springCloudVersion: String by project
@@ -65,7 +67,7 @@ subprojects {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "17"
+            jvmTarget = "11"
         }
     }
 

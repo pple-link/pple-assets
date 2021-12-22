@@ -1,0 +1,28 @@
+version: 0.2
+
+env:
+  variables:
+    DOCKER_REPOSITORY: "106380540986.dkr.ecr.ap-northeast-2.amazonaws.com/pple-assets"
+    AWS_DEFAULT_REGION: "ap-northeast-2"
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin "$DOCKER_REPOSITORY"
+      - echo "Get Build Number..."
+      - BUILD_NUMBER=$(date '+%Y%m%d%H%M%S')
+      - echo Build Number ':' $BUILD_NUMBER
+  build:
+    on-failure: ABORT
+    commands:
+      - echo Build Starting on BUILD_NUMBER ':' $BUILD_NUMBER
+      - echo Build Spring
+      - cd $CODEBUILD_SRC_DIR && ./gradlew clean :pple-assets-interfaces:jibDockerBuild -Djib.to.tags=$BUILD_NUMBER -Djib.to.image=$DOCKER_REPOSITORY
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $DOCKER_REPOSITORY\:latest
+      - docker push $DOCKER_REPOSITORY:$BUILD_NUMBER

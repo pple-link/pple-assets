@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  app:
+    image: 106380540986.dkr.ecr.ap-northeast-2.amazonaws.com/pple-assets:latest
+    container_name: pple_assets
+    ports:
+      - "10002:10002"
+    volumes:
+      - /pple/logs/app:/pple/logs/app
+    environment:
+      SPRING_PROFILES_ACTIVE: "develop"
