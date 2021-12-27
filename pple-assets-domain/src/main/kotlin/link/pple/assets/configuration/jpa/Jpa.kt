@@ -1,5 +1,8 @@
-package link.pple.assets.domain.configuration.jpa
+package link.pple.assets.configuration.jpa
 
+/**
+ * @Author Heli
+ */
 object Jpa {
     const val PPLE_TRANSACTION_MANAGER: String = "ppleTransactionManager"
     const val PPLE_ENTITY_MANAGER: String = "ppleEntityManager"

@@ -1,4 +1,4 @@
-package link.pple.assets.domain.configuration.jpa
+package link.pple.assets.configuration.jpa
 
 import link.pple.assets.domain.Domain
 import org.hibernate.cfg.AvailableSettings
@@ -14,6 +14,9 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
 
+/**
+ * @Author Heli
+ */
 @Configuration
 @EnableJpaAuditing
 @EnableJpaRepositories(
@@ -31,7 +34,7 @@ class JpaConfiguration(
         val properties = mapOf(
             AvailableSettings.USE_SECOND_LEVEL_CACHE to false.toString(),
             AvailableSettings.USE_QUERY_CACHE to false.toString(),
-            AvailableSettings.HBM2DDL_AUTO to "create"
+            AvailableSettings.HBM2DDL_AUTO to "none"
         )
 
         return builder

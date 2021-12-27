@@ -1,10 +1,16 @@
-package link.pple.assets.domain.configuration.jpa
+package link.pple.assets.configuration.jpa
 
 import link.pple.assets.util.lateInit
 import link.pple.assets.util.notNull
+import org.springframework.data.annotation.CreatedBy
+import org.springframework.data.annotation.LastModifiedBy
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 import javax.persistence.*
 
+/**
+ * @Author Heli
+ */
 @MappedSuperclass
 abstract class BaseEntity {
 
@@ -35,3 +41,19 @@ abstract class BaseEntity {
 }
 
 val BaseEntity.requiredId: Long get() = id.notNull { "Entity(${javaClass.simpleName}) id is null" }
+
+/**
+ * @Author Heli
+ */
+@EntityListeners(AuditingEntityListener::class)
+@MappedSuperclass
+abstract class BaseAuditingEntity : BaseEntity() {
+
+    @AttributeOverride(name = "accountId", column = Column(name = "createdAccountId", updatable = false))
+    @CreatedBy
+    var createdBy: Auditor = lateInit()
+
+    @AttributeOverride(name = "accountId", column = Column(name = "modifiedAccountId"))
+    @LastModifiedBy
+    var modifiedBy: Auditor = lateInit()
+}

@@ -1,14 +1,14 @@
-package link.pple.assets.domain.configuration.jpa
+package link.pple.assets.configuration.jpa
 
 import org.springframework.data.domain.AuditorAware
 import java.util.*
-import javax.persistence.Column
 import javax.persistence.Embeddable
 
+/**
+ * @Author Heli
+ */
 @Embeddable
 data class Auditor(
-
-    @Column(name = "accountId")
     val accountId: Long
 ) {
     val isSystem: Boolean get() = this.accountId == SYSTEM_ID
