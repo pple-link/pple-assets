@@ -1,6 +1,8 @@
 package link.pple.assets.configuration.auditor
 
 import link.pple.assets.configuration.jpa.Auditor
+import link.pple.assets.configuration.jpa.Auditor.Companion.SYSTEM_ID
+import link.pple.assets.configuration.jpa.Auditor.Companion.ofSystem
 import link.pple.assets.configuration.jpa.AuditorHolder
 import link.pple.assets.configuration.jpa.requiredId
 import link.pple.assets.domain.account.service.AccountQuery
@@ -34,9 +36,12 @@ class AuditorInterceptor(
         val accountUuidHeaderValue = request.getHeader(ACCOUNT_UUID_HEADER_NAME)
             .notNull { "$ACCOUNT_UUID_HEADER_NAME is required [${request.requestURI}]" }
 
-        val account = accountQuery.getByUuid(uuid = accountUuidHeaderValue)
-
-        val auditor = Auditor(account.requiredId)
+        val auditor = if (accountUuidHeaderValue == SYSTEM_ID.toString()) {
+            ofSystem()
+        } else {
+            val account = accountQuery.getByUuid(uuid = accountUuidHeaderValue)
+            Auditor(account.requiredId)
+        }
 
         AuditorHolder.set(auditor)
     }
@@ -58,3 +63,4 @@ class AuditorInterceptor(
         private const val ACCOUNT_UUID_HEADER_NAME = "X-ACCOUNT-UUID"
     }
 }
+

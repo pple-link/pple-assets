@@ -19,7 +19,7 @@ class TermRestController(
         value = ["/term/api/v1/term"],
         produces = [MediaType.APPLICATION_JSON_VALUE],
     )
-    fun getAll(): List<TermDto> {
+    fun getAllTerms(): List<TermDto> {
         val terms = termQuery.getAll()
 
         return terms.map {

@@ -51,7 +51,6 @@ data class AccountPatchDto(
 // ===============================
 
 data class AccountDto(
-    val uuid: String,
     val key: ProviderKeyDto,
     val email: String,
     val displayName: String,
@@ -85,7 +84,6 @@ data class BloodDto(
 // ===============================
 
 internal fun Account.toDto() = AccountDto(
-    uuid = uuid.toString(),
     key = key.toDto(),
     email = email,
     displayName = displayName,

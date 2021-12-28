@@ -3,6 +3,7 @@ package link.pple.assets.interfaces.api
 import link.pple.assets.configuration.jpa.BaseAuditingEntity
 import link.pple.assets.configuration.jpa.BaseEntity
 import link.pple.assets.configuration.jpa.requiredId
+import link.pple.assets.configuration.jpa.string
 import link.pple.assets.util.lateInit
 import org.springframework.data.domain.Page
 import java.time.LocalDateTime
@@ -47,6 +48,7 @@ fun Page<*>.toDto() = PageDto(
 
 abstract class AuditingEntityDto {
     var id: Long? = lateInit()
+    var uuid: String? = lateInit()
     var createdAt: LocalDateTime? = lateInit()
     var createdBy: Long? = lateInit()
     var modifiedAt: LocalDateTime? = lateInit()
@@ -55,6 +57,7 @@ abstract class AuditingEntityDto {
 
 inline fun <reified T : AuditingEntityDto> T.entityData(entity: BaseAuditingEntity): T {
     id = entity.requiredId
+    uuid = entity.uuid.string
     createdAt = entity.createdAt
     createdBy = entity.createdBy.accountId
     modifiedAt = entity.modifiedAt
@@ -64,12 +67,14 @@ inline fun <reified T : AuditingEntityDto> T.entityData(entity: BaseAuditingEnti
 
 abstract class EntityDto {
     var id: Long? = lateInit()
+    var uuid: String? = lateInit()
     var createdAt: LocalDateTime? = lateInit()
     var modifiedAt: LocalDateTime? = lateInit()
 }
 
 inline fun <reified T : EntityDto> T.entityData(entity: BaseEntity): T {
     id = entity.requiredId
+    uuid = entity.uuid.string
     createdAt = entity.createdAt
     modifiedAt = entity.modifiedAt
     return this
