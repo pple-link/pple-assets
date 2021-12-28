@@ -27,4 +27,16 @@ class DonationHistory private constructor(
     enum class Step {
         CONNECT, OFFER, CONFIRM
     }
+
+    companion object {
+
+        fun create(
+            donation: Donation,
+            donor: Account
+        ) = DonationHistory(
+            donation = donation,
+            donor = donor,
+            step = Step.CONNECT
+        )
+    }
 }

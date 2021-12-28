@@ -28,7 +28,7 @@ internal class AppreciationCommandTest {
     private lateinit var donationQuery: DonationQuery
 
     @InjectMockKs
-    private lateinit var appreciationCommand: AppreciationCommand
+    private lateinit var sut: AppreciationCommand
 
     @Test
     fun `감사 메시지를 작성할 수 있다`() {
@@ -50,7 +50,7 @@ internal class AppreciationCommandTest {
         )
 
         // when
-        val actual = appreciationCommand.create(definition)
+        val actual = sut.create(definition)
 
         // then
         expectThat(actual) {

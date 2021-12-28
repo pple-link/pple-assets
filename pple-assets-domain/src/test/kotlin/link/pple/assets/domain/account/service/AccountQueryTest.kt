@@ -11,10 +11,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.repository.findByIdOrNull
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import java.time.LocalDate
+import java.util.*
 
 /**
  * @Author Heli
@@ -111,5 +113,69 @@ internal class AccountQueryTest {
                 get { phoneNumber } isEqualTo "+821000000000"
                 get { blood } isEqualTo Blood(Blood.ABO.B, Blood.RH.POSITIVE)
             }
+    }
+
+    @Test
+    fun `id 로 Account 를 조회할 수 없으면 에러가 발생한다`() {
+        // given
+        val id = 42L
+        every { accountRepository.findByIdOrNull(id) } returns null
+
+        // when
+
+        // then
+        expectThrows<IllegalArgumentException> {
+            sut.getById(accountId = id)
+        }
+    }
+
+    @Test
+    fun `uuid 로 Account 를 조회할 수 있다`() {
+        // given
+        val uuid = UUID.randomUUID()
+        val birthDay = LocalDate.now()
+        every { accountRepository.findByUuid(uuid) } returns Account.create(
+            providerType = Account.ProviderType.KAKAO,
+            providerAccountId = "1234",
+            email = "sun@example.com",
+            displayName = "Sun",
+            birthDay = birthDay,
+            gender = Account.Gender.MALE,
+            phoneNumber = "+821000000000",
+            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f",
+            blood = Blood(
+                abo = Blood.ABO.B,
+                rh = Blood.RH.POSITIVE
+            )
+        )
+
+        // when
+        val actual = sut.getByUuid(uuid = uuid.toString())
+
+        // then
+        expectThat(actual)
+            .and {
+                get { key } isEqualTo Account.ProviderKey(Account.ProviderType.KAKAO, "1234")
+                get { email } isEqualTo "sun@example.com"
+                get { displayName } isEqualTo "Sun"
+                get { birthDay } isEqualTo birthDay
+                get { gender } isEqualTo Account.Gender.MALE
+                get { phoneNumber } isEqualTo "+821000000000"
+                get { blood } isEqualTo Blood(Blood.ABO.B, Blood.RH.POSITIVE)
+            }
+    }
+
+    @Test
+    fun `uuid 로 Account 를 조회할 수 없으면 에러가 발생한다`() {
+        // given
+        val uuid = UUID.randomUUID()
+        every { accountRepository.findByUuid(uuid) } returns null
+
+        // when
+
+        // then
+        expectThrows<IllegalArgumentException> {
+            sut.getByUuid(uuid = uuid.toString())
+        }
     }
 }

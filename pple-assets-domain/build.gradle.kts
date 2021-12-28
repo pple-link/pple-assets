@@ -29,3 +29,30 @@ dependencies {
     implementation("com.querydsl:querydsl-jpa")
     kapt("com.querydsl:querydsl-apt:$queryDslVersion:jpa")
 }
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = "BRANCH"
+                minimum = "0.005".toBigDecimal()
+            }
+
+            limit {
+                counter = "LINE"
+                minimum = "0.005".toBigDecimal()
+            }
+        }
+    }
+    classDirectories.setFrom(
+        fileTree(project.buildDir) {
+            exclude(
+                "**/Q*.*",
+                "**/*Test.*"
+            )
+            include(
+                "**/classes/**/main/**"
+            )
+        }
+    )
+}

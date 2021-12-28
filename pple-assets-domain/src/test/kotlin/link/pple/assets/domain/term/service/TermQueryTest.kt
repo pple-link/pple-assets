@@ -24,7 +24,7 @@ internal class TermQueryTest {
     private lateinit var termRepository: TermRepository
 
     @InjectMockKs
-    private lateinit var termQuery: TermQuery
+    private lateinit var sut: TermQuery
 
     @Test
     fun `id 로 Term 을 찾을 수 있다`() {
@@ -38,7 +38,7 @@ internal class TermQueryTest {
         every { termRepository.load(EXIST_TERM_ID) } returns term
 
         // when
-        val actual = termQuery.getById(EXIST_TERM_ID)
+        val actual = sut.getById(EXIST_TERM_ID)
 
         // then
         expectThat(actual) {
@@ -59,7 +59,7 @@ internal class TermQueryTest {
 
         // then
         expectThrows<IllegalArgumentException> {
-            termQuery.getById(EXIST_TERM_ID)
+            sut.getById(EXIST_TERM_ID)
         }
     }
 
@@ -83,7 +83,7 @@ internal class TermQueryTest {
         )
 
         // when
-        val actual = termQuery.getAll()
+        val actual = sut.getAll()
 
         // then
         expectThat(actual) {

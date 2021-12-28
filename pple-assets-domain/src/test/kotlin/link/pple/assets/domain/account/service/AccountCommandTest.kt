@@ -28,7 +28,7 @@ internal class AccountCommandTest {
     private lateinit var accountQuery: AccountQuery
 
     @InjectMockKs
-    private lateinit var accountCommand: AccountCommand
+    private lateinit var sut: AccountCommand
 
     @Test
     fun `계정을 생성할 수 있다`() {
@@ -54,7 +54,7 @@ internal class AccountCommandTest {
         every { accountRepository.save(any()) } returns Account.from(definition)
 
         // when
-        val actual = accountCommand.create(definition = definition)
+        val actual = sut.create(definition = definition)
 
         // then
         expectThat(actual) {
@@ -95,7 +95,7 @@ internal class AccountCommandTest {
 
         // then
         expectThrows<IllegalArgumentException> {
-            accountCommand.create(definition = definition)
+            sut.create(definition = definition)
         }
     }
 
@@ -124,7 +124,7 @@ internal class AccountCommandTest {
         every { accountRepository.save(any()) } returns account
 
         // when
-        val actual = accountCommand.update(
+        val actual = sut.update(
             accountId = EXIST_ACCOUNT_ID,
             displayName = "modified",
             profileImageUrl = "modified"

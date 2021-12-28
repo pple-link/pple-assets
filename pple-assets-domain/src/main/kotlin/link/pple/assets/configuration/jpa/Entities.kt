@@ -62,7 +62,3 @@ abstract class BaseAuditingEntity : BaseEntity() {
     @LastModifiedBy
     var modifiedBy: Auditor = lateInit()
 }
-
-
-val UUID.string: String
-    get() = this.toString()

@@ -10,6 +10,8 @@ plugins {
     kotlin("kapt")
 
     id("com.google.cloud.tools.jib") version "3.1.4" apply false
+
+    jacoco
 }
 
 configurations {
@@ -34,6 +36,8 @@ subprojects {
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-kapt")
     apply(plugin = "kotlin-spring")
+
+    apply(plugin = "jacoco")
 
     java.sourceCompatibility = JavaVersion.VERSION_11
     java.targetCompatibility = JavaVersion.VERSION_11
@@ -76,5 +80,37 @@ subprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform()
+    }
+
+    tasks.test {
+        extensions.configure(JacocoTaskExtension::class) {
+            setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+        }
+
+        finalizedBy("jacocoTestReport")
+    }
+
+    jacoco {
+        toolVersion = "0.8.7"
+    }
+
+    tasks.jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = true
+        }
+        finalizedBy("jacocoTestCoverageVerification")
+
+        classDirectories.setFrom(
+            fileTree(project.buildDir) {
+                exclude(
+                    "**/Q*.*",
+                    "**/*Test.*"
+                )
+                include(
+                    "**/classes/**/main/**"
+                )
+            }
+        )
     }
 }

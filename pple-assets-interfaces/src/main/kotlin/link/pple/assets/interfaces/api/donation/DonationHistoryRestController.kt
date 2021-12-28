@@ -19,13 +19,13 @@ class DonationHistoryRestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun getAllDonationHistories(
-        @RequestParam donorAccountId: Long?,
-        @RequestParam donationId: Long?
+        @RequestParam donorAccountUuid: String?,
+        @RequestParam donationUuid: String?
     ): List<DonationHistoryDto> {
 
         val histories = donationHistoryQuery.getAll(
-            donationId = donationId,
-            donorAccountId = donorAccountId
+            donorAccountUuid = donorAccountUuid,
+            donationUuid = donationUuid
         )
 
         return histories.map {

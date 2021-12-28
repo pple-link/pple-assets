@@ -3,7 +3,6 @@ package link.pple.assets.interfaces.api
 import link.pple.assets.configuration.jpa.BaseAuditingEntity
 import link.pple.assets.configuration.jpa.BaseEntity
 import link.pple.assets.configuration.jpa.requiredId
-import link.pple.assets.configuration.jpa.string
 import link.pple.assets.util.lateInit
 import org.springframework.data.domain.Page
 import java.time.LocalDateTime
@@ -57,7 +56,7 @@ abstract class AuditingEntityDto {
 
 inline fun <reified T : AuditingEntityDto> T.entityData(entity: BaseAuditingEntity): T {
     id = entity.requiredId
-    uuid = entity.uuid.string
+    uuid = entity.uuid.toString()
     createdAt = entity.createdAt
     createdBy = entity.createdBy.accountId
     modifiedAt = entity.modifiedAt
@@ -74,7 +73,7 @@ abstract class EntityDto {
 
 inline fun <reified T : EntityDto> T.entityData(entity: BaseEntity): T {
     id = entity.requiredId
-    uuid = entity.uuid.string
+    uuid = entity.uuid.toString()
     createdAt = entity.createdAt
     modifiedAt = entity.modifiedAt
     return this

@@ -47,13 +47,13 @@ class AppreciationRestController(
     )
     @AuditingApi
     fun getAllAppreciations(
-        @RequestParam donorAccountId: Long?,
-        @RequestParam donationId: Long?
+        @RequestParam donorAccountUuid: String?,
+        @RequestParam donationUuid: String?
     ): List<AppreciationDto> {
 
         val appreciations = appreciationQuery.getAll(
-            donorAccountId = donorAccountId,
-            donationId = donationId
+            donorAccountUuid = donorAccountUuid,
+            donationUuid = donationUuid
         )
 
         return appreciations.map {
