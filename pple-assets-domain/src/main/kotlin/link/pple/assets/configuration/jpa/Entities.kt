@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
+import java.util.*
 import javax.persistence.*
 
 /**
@@ -18,6 +19,9 @@ abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = lateInit()
 
+    @Column(columnDefinition = "BINARY(16)")
+    var uuid: UUID = lateInit()
+
     @Column(updatable = false)
     var createdAt: LocalDateTime = lateInit()
 
@@ -28,6 +32,7 @@ abstract class BaseEntity {
         val now = LocalDateTime.now()
         createdAt = now
         modifiedAt = now
+        uuid = UUID.randomUUID()
     }
 
     @PreUpdate
@@ -57,3 +62,7 @@ abstract class BaseAuditingEntity : BaseEntity() {
     @LastModifiedBy
     var modifiedBy: Auditor = lateInit()
 }
+
+
+val UUID.string: String
+    get() = this.toString()

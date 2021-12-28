@@ -34,7 +34,7 @@ class JpaConfiguration(
         val properties = mapOf(
             AvailableSettings.USE_SECOND_LEVEL_CACHE to false.toString(),
             AvailableSettings.USE_QUERY_CACHE to false.toString(),
-            AvailableSettings.HBM2DDL_AUTO to "none"
+            AvailableSettings.HBM2DDL_AUTO to "update"
         )
 
         return builder
