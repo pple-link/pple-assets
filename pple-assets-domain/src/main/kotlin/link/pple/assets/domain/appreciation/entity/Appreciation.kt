@@ -27,4 +27,16 @@ class Appreciation private constructor(
     enum class Status {
         ACTIVE, DELETE
     }
+
+    companion object {
+
+        fun create(
+            content: String,
+            donation: Donation
+        ) = Appreciation(
+            content = content,
+            donation = donation,
+            status = Status.ACTIVE
+        )
+    }
 }

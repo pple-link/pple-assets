@@ -14,7 +14,7 @@ class TermQuery(
 ) {
 
     fun getById(termId: Long): Term {
-        return termRepository.load(termId).notNull { "Term 를 찾을 수 없음 [termId=$termId]" }
+        return termRepository.load(termId).notNull { "Term 를 찾을 수 없음 [$termId]" }
     }
 
     fun getAll(): List<Term> {

@@ -9,11 +9,15 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
+import java.util.*
 
 /**
  * @Author Heli
  */
-interface DonationRepository : JpaRepository<Donation, Long>, DonationRepositoryCustom
+interface DonationRepository : JpaRepository<Donation, Long>, DonationRepositoryCustom {
+
+    fun findByUuid(uuid: UUID): Donation?
+}
 
 interface DonationRepositoryCustom {
 

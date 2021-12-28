@@ -6,7 +6,6 @@ import link.pple.assets.domain.account.service.AccountDefinition
 import link.pple.assets.util.notNull
 import org.hibernate.annotations.Where
 import java.time.LocalDate
-import java.util.*
 import javax.persistence.*
 
 /**
@@ -15,9 +14,6 @@ import javax.persistence.*
 @Entity
 @Table(name = "accounts")
 class Account private constructor(
-
-    @Column(columnDefinition = "BINARY(16)")
-    val uuid: UUID,
 
     @Embedded
     val key: ProviderKey,
@@ -106,7 +102,6 @@ class Account private constructor(
             profileImageUrl: String,
             blood: Blood
         ) = Account(
-            uuid = UUID.randomUUID(),
             key = ProviderKey(
                 type = providerType,
                 id = providerAccountId
