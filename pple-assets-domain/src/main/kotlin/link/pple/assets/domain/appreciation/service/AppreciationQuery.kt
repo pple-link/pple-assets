@@ -18,10 +18,15 @@ class AppreciationQuery(
         return appreciationRepository.findByUuid(uuid.toUUID()).notNull { "Appreciation 를 찾을 수 없음 [$uuid]" }
     }
 
-    fun getAll(donorAccountUuid: String?, donationUuid: String?): List<Appreciation> {
+    fun getAll(
+        donorAccountUuid: String?,
+        donationUuid: String?,
+        status: List<Appreciation.Status>?
+    ): List<Appreciation> {
         return appreciationRepository.findAll(
             donorAccountUuid = donorAccountUuid?.toUUID(),
-            donationUuid = donationUuid?.toUUID()
+            donationUuid = donationUuid?.toUUID(),
+            status = status
         )
     }
 }

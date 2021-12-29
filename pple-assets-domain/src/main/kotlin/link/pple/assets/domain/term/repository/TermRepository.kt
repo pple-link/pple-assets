@@ -2,6 +2,7 @@ package link.pple.assets.domain.term.repository
 
 import link.pple.assets.domain.term.entity.QTerm.term
 import link.pple.assets.domain.term.entity.Term
+import link.pple.assets.infrastructure.util.inFilterEmpty
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
@@ -14,7 +15,7 @@ interface TermRepositoryCustom {
 
     fun load(termId: Long): Term?
 
-    fun load(): List<Term>
+    fun load(status: List<Term.Status>?): List<Term>
 }
 
 class TermRepositoryImpl : QuerydslRepositorySupport(Term::class.java), TermRepositoryCustom {
@@ -27,10 +28,10 @@ class TermRepositoryImpl : QuerydslRepositorySupport(Term::class.java), TermRepo
             .fetchOne()
     }
 
-    override fun load(): List<Term> {
+    override fun load(status: List<Term.Status>?): List<Term> {
         return from(term)
             .where(
-                term.status.eq(Term.Status.ACTIVE)
+                term.status.inFilterEmpty(status)
             )
             .orderBy(term.seq.asc())
             .fetch()

@@ -17,7 +17,9 @@ class TermQuery(
         return termRepository.load(termId).notNull { "Term 를 찾을 수 없음 [$termId]" }
     }
 
-    fun getAll(): List<Term> {
-        return termRepository.load()
+    fun getAll(status: List<Term.Status>?): List<Term> {
+        return termRepository.load(
+            status = status
+        )
     }
 }

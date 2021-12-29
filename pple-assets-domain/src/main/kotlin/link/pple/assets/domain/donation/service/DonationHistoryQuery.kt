@@ -13,10 +13,15 @@ class DonationHistoryQuery(
     private val donationHistoryRepository: DonationHistoryRepository
 ) {
 
-    fun getAll(donorAccountUuid: String?, donationUuid: String?): List<DonationHistory> {
+    fun getAll(
+        donorAccountUuid: String?,
+        donationUuid: String?,
+        steps: List<DonationHistory.Step>?
+    ): List<DonationHistory> {
         return donationHistoryRepository.findAll(
             donorAccountUuid = donorAccountUuid?.toUUID(),
-            donationUuid = donationUuid?.toUUID()
+            donationUuid = donationUuid?.toUUID(),
+            steps = steps
         )
     }
 }

@@ -1,5 +1,6 @@
 package link.pple.assets.interfaces.api.donation
 
+import link.pple.assets.domain.donation.entity.DonationHistory
 import link.pple.assets.domain.donation.service.DonationHistoryQuery
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,13 +20,15 @@ class DonationHistoryRestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun getAllDonationHistories(
-        @RequestParam donorAccountUuid: String?,
-        @RequestParam donationUuid: String?
+        @RequestParam(required = false) donorAccountUuid: String?,
+        @RequestParam(required = false) donationUuid: String?,
+        @RequestParam(required = false) steps: List<DonationHistory.Step>?
     ): List<DonationHistoryDto> {
 
         val histories = donationHistoryQuery.getAll(
             donorAccountUuid = donorAccountUuid,
-            donationUuid = donationUuid
+            donationUuid = donationUuid,
+            steps = steps
         )
 
         return histories.map {
