@@ -20,11 +20,7 @@ data class AppreciationDefinitionDto(
 )
 
 data class AppreciationDto(
-
-    @NotEmpty
     val content: String,
-
-    @NotEmpty
     val status: String
 ) : AuditingEntityDto()
 

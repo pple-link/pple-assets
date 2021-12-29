@@ -6,7 +6,5 @@ data class DonationDefinition(
     val title: String,
     val content: String,
     val patient: PatientDefinition,
-    val needCount: Long
+    val needCount: Long?
 )
-
-

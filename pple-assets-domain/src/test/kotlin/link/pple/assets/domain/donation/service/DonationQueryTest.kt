@@ -9,8 +9,11 @@ import link.pple.assets.domain.donation.entity.Donation
 import link.pple.assets.domain.donation.repository.DonationRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import strikt.api.expectThat
 import strikt.api.expectThrows
+import strikt.assertions.get
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
 import java.util.*
@@ -62,6 +65,39 @@ internal class DonationQueryTest {
         // then
         expectThrows<IllegalArgumentException> {
             sut.getByUuid(uuid.toString())
+        }
+    }
+
+    @Test
+    fun `Donation 목록을 Page 로 조회할 수 있다`() {
+        // given
+        val firstDonation = Donation.create(
+            title = "title",
+            content = "content",
+            patient = mockk(),
+            needCount = 5L
+        )
+        val donations = listOf(firstDonation)
+        val donationPages = PageImpl(donations, Pageable.ofSize(10), donations.size.toLong())
+        every { donationRepository.load(emptyList(), pageable = Pageable.ofSize(10)) } returns donationPages
+
+        // when
+        val actual = sut.getExecutionPage(
+            status = emptyList(),
+            pageable = Pageable.ofSize(10)
+        )
+
+        // then
+        expectThat(actual) {
+            get { content.size } isEqualTo 1
+            get { content }.and {
+                get(0).and {
+                    get { title } isEqualTo "title"
+                    get { content } isEqualTo "content"
+                    get { patient } isNotEqualTo null
+                    get { needCount } isEqualTo 5L
+                }
+            }
         }
     }
 }

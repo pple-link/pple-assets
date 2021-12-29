@@ -14,6 +14,7 @@ import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 import java.time.LocalDate
+import java.util.*
 
 /**
  * @Author Heli
@@ -100,7 +101,7 @@ internal class AccountCommandTest {
     }
 
     @Test
-    fun `계정 정보를 수정할 수 있다`() {
+    fun `id 로 계정 정보를 수정할 수 있다`() {
         // given
         val birthDay = LocalDate.now()
         val definition = AccountDefinition(
@@ -146,7 +147,55 @@ internal class AccountCommandTest {
         }
     }
 
+    @Test
+    fun `uuid 로 계정 정보를 수정할 수 있다`() {
+        // given
+        val birthDay = LocalDate.now()
+        val definition = AccountDefinition(
+            key = Account.ProviderKey(
+                type = Account.ProviderType.KAKAO,
+                id = "1234"
+            ),
+            email = "college@kakao.com",
+            displayName = "Sun",
+            birthDay = birthDay,
+            gender = Account.Gender.MALE,
+            phoneNumber = "+821012345678",
+            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f",
+            blood = Blood(
+                abo = Blood.ABO.B,
+                rh = Blood.RH.POSITIVE
+            )
+        )
+        val account = Account.from(definition)
+        every { accountQuery.getByUuid(EXIST_ACCOUNT_UUID.toString()) } returns account
+        every { accountRepository.save(any()) } returns account
+
+        // when
+        val actual = sut.update(
+            uuid = EXIST_ACCOUNT_UUID.toString(),
+            displayName = "modified",
+            profileImageUrl = "modified"
+        )
+
+        // then
+        verify {
+            accountRepository.save(account)
+        }
+        expectThat(actual) {
+            get { key } isEqualTo Account.ProviderKey(Account.ProviderType.KAKAO, "1234")
+            get { email } isEqualTo "college@kakao.com"
+            get { displayName } isEqualTo "modified"
+            get { birthDay } isEqualTo birthDay
+            get { gender } isEqualTo Account.Gender.MALE
+            get { phoneNumber } isEqualTo "+821012345678"
+            get { profileImageUrl } isEqualTo "modified"
+            get { blood } isEqualTo Blood(Blood.ABO.B, Blood.RH.POSITIVE)
+        }
+    }
+
     companion object {
         private const val EXIST_ACCOUNT_ID = 42L
+        private val EXIST_ACCOUNT_UUID = UUID.randomUUID()
     }
 }

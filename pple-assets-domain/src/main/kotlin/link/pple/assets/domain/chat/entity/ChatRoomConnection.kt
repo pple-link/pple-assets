@@ -26,4 +26,16 @@ class ChatRoomConnection private constructor(
     enum class Status {
         CONNECT, DISCONNECT
     }
+
+    companion object {
+
+        fun create(
+            chatRoom: ChatRoom,
+            account: Account
+        ) = ChatRoomConnection(
+            chatRoom = chatRoom,
+            account = account,
+            status = Status.CONNECT
+        )
+    }
 }

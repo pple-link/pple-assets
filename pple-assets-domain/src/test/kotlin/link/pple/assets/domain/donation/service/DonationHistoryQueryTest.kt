@@ -31,8 +31,6 @@ internal class DonationHistoryQueryTest {
     @Test
     fun `DonationHistory 목록을 조회할 수 있다`() {
         // given
-        val donorAccountUuid = UUID.randomUUID()
-        val donationUuid = UUID.randomUUID()
         val firstDonationHistory = DonationHistory.create(
             donation = mockk(),
             donor = mockk()
@@ -43,15 +41,17 @@ internal class DonationHistoryQueryTest {
         )
         every {
             donationHistoryRepository.findAll(
-                donorAccountUuid = donorAccountUuid,
-                donationUuid = donationUuid
+                donorAccountUuid = EXIST_ACCOUNT_UUID,
+                donationUuid = EXIST_DONATION_UUID,
+                steps = emptyList()
             )
         } returns listOf(firstDonationHistory, secondDonationHistory)
 
         // when
         val donationHistories = sut.getAll(
-            donorAccountUuid = donorAccountUuid.toString(),
-            donationUuid = donationUuid.toString()
+            donorAccountUuid = EXIST_ACCOUNT_UUID.toString(),
+            donationUuid = EXIST_DONATION_UUID.toString(),
+            steps = emptyList()
         )
 
         // then
@@ -73,22 +73,28 @@ internal class DonationHistoryQueryTest {
     @Test
     fun `조회할 DonationHistory 가 없으면 빈 목록을 반환한다`() {
         // given
-        val donorAccountUuid = UUID.randomUUID()
-        val donationUuid = UUID.randomUUID()
         every {
             donationHistoryRepository.findAll(
-                donorAccountUuid = donorAccountUuid,
-                donationUuid = donationUuid
+                donorAccountUuid = null,
+                donationUuid = null,
+                steps = emptyList()
             )
         } returns emptyList()
 
         // when
         val donationHistories = sut.getAll(
-            donorAccountUuid = donorAccountUuid.toString(),
-            donationUuid = donationUuid.toString()
+            donorAccountUuid = null,
+            donationUuid = null,
+            steps = emptyList()
         )
 
         // then
         expectThat(donationHistories) hasSize 0
+    }
+
+    companion object {
+
+        private val EXIST_ACCOUNT_UUID = UUID.randomUUID()
+        private val EXIST_DONATION_UUID = UUID.randomUUID()
     }
 }

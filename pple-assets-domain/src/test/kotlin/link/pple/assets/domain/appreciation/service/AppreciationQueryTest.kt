@@ -68,6 +68,49 @@ internal class AppreciationQueryTest {
     }
 
     @Test
+    fun `Account 가 도움을 준 지정헌혈 요청의 감사 메시지를 조회한다`() {
+        // given
+        val donation = Donation.create(
+            title = "title",
+            content = "content",
+            patient = mockk(),
+            needCount = 5L
+        )
+        val firstAppreciation = Appreciation.create(
+            content = "content1",
+            donation = donation
+        )
+        val secondAppreciation = Appreciation.create(
+            content = "content2",
+            donation = donation
+        )
+        every { appreciationRepository.findAll(EXIST_ACCOUNT_UUID, EXIST_DONATION_UUID, emptyList()) } returns listOf(
+            firstAppreciation, secondAppreciation
+        )
+
+        // when
+        val actual = sut.getAll(
+            donorAccountUuid = EXIST_ACCOUNT_UUID.toString(),
+            donationUuid = EXIST_DONATION_UUID.toString(),
+            status = emptyList()
+        )
+
+        // then
+        expectThat(actual) {
+            hasSize(2).and {
+                get(0).and {
+                    get { content } isEqualTo "content1"
+                    get { status } isEqualTo Appreciation.Status.ACTIVE
+                }
+                get(1).and {
+                    get { content } isEqualTo "content2"
+                    get { status } isEqualTo Appreciation.Status.ACTIVE
+                }
+            }
+        }
+    }
+
+    @Test
     fun `모든 감사 메시지를 조회한다`() {
         // given
         val donation = Donation.create(
@@ -84,16 +127,15 @@ internal class AppreciationQueryTest {
             content = "content2",
             donation = donation
         )
-        val donorAccountUuid = UUID.randomUUID()
-        val donationUuid = UUID.randomUUID()
-        every { appreciationRepository.findAll(donorAccountUuid, donationUuid) } returns listOf(
+        every { appreciationRepository.findAll(null, null, emptyList()) } returns listOf(
             firstAppreciation, secondAppreciation
         )
 
         // when
         val actual = sut.getAll(
-            donorAccountUuid = donorAccountUuid.toString(),
-            donationUuid = donationUuid.toString()
+            donorAccountUuid = null,
+            donationUuid = null,
+            status = emptyList()
         )
 
         // then
@@ -101,9 +143,11 @@ internal class AppreciationQueryTest {
             hasSize(2).and {
                 get(0).and {
                     get { content } isEqualTo "content1"
+                    get { status } isEqualTo Appreciation.Status.ACTIVE
                 }
                 get(1).and {
                     get { content } isEqualTo "content2"
+                    get { status } isEqualTo Appreciation.Status.ACTIVE
                 }
             }
         }
@@ -112,14 +156,19 @@ internal class AppreciationQueryTest {
     @Test
     fun `등록된 감사 메시지가 없으면 빈 리스트를 반환한다`() {
         // given
-        val donorAccountUuid = UUID.randomUUID()
-        val donationUuid = UUID.randomUUID()
-        every { appreciationRepository.findAll(donorAccountUuid, donationUuid) } returns emptyList()
+        every {
+            appreciationRepository.findAll(
+                EXIST_ACCOUNT_UUID,
+                EXIST_DONATION_UUID,
+                emptyList()
+            )
+        } returns emptyList()
 
         // when
         val actual = sut.getAll(
-            donorAccountUuid = donorAccountUuid.toString(),
-            donationUuid = donationUuid.toString()
+            donorAccountUuid = EXIST_ACCOUNT_UUID.toString(),
+            donationUuid = EXIST_DONATION_UUID.toString(),
+            status = emptyList()
         )
 
         // then
@@ -128,5 +177,7 @@ internal class AppreciationQueryTest {
 
     companion object {
         private val EXIST_APPRECIATION_UUID = UUID.randomUUID()
+        private val EXIST_ACCOUNT_UUID = UUID.randomUUID()
+        private val EXIST_DONATION_UUID = UUID.randomUUID()
     }
 }

@@ -19,6 +19,7 @@ class DonationCommand(
 
     fun create(definition: DonationDefinition): Donation {
 
+        // TODO Patient 재활용 가능하게 수정??
         val newPatient = patientCommand.create(definition = definition.patient)
 
         val donation = Donation.create(

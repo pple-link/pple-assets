@@ -13,7 +13,10 @@ import java.util.*
 /**
  * @Author Heli
  */
-interface ChatRoomRepository : JpaRepository<ChatRoom, Long>, ChatRoomRepositoryCustom
+interface ChatRoomRepository : JpaRepository<ChatRoom, Long>, ChatRoomRepositoryCustom {
+
+    fun findByUuid(uuid: UUID): ChatRoom?
+}
 
 interface ChatRoomRepositoryCustom {
 

@@ -78,12 +78,12 @@ internal class TermQueryTest {
             required = true,
             seq = 2L
         )
-        every { termRepository.load() } returns listOf(
+        every { termRepository.load(status = emptyList()) } returns listOf(
             termFirst, termSecond
         )
 
         // when
-        val actual = sut.getAll()
+        val actual = sut.getAll(status = emptyList())
 
         // then
         expectThat(actual) {
