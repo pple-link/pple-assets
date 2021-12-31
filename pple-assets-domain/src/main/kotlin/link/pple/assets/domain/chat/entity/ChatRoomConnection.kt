@@ -8,7 +8,7 @@ import javax.persistence.*
  * @Author Heli
  */
 @Entity
-@Table(name = "chat_connections")
+@Table(name = "chat_room_connections")
 class ChatRoomConnection private constructor(
 
     @JoinColumn(name = "chatRoomId", referencedColumnName = "id", updatable = false)

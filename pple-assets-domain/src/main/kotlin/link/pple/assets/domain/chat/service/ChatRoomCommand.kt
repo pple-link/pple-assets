@@ -18,7 +18,7 @@ class ChatRoomCommand(
     fun create(definition: ChatRoomDefinition): ChatRoom {
 
         val chatRoom = ChatRoom.create(
-            name = definition.name
+            title = definition.title
         )
 
         return chatRoomRepository.save(chatRoom)

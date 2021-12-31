@@ -27,10 +27,10 @@ internal class ChatRoomCommandTest {
     fun `ChatRoom 을 생성할 수 있다`() {
         // given
         val definition = ChatRoomDefinition(
-            name = "chatRoom"
+            title = "chatRoom"
         )
         every { chatRoomRepository.save(any()) } returns ChatRoom.create(
-            name = definition.name
+            title = definition.title
         )
 
         // when
@@ -38,7 +38,7 @@ internal class ChatRoomCommandTest {
 
         // then
         expectThat(actual) {
-            get { name } isEqualTo "chatRoom"
+            get { title } isEqualTo "chatRoom"
         }
     }
 }

@@ -3,3 +3,7 @@ debug: true
 springdoc:
   api-docs:
     enabled: true
+
+aws:
+  s3:
+    bucket: pple-dev-resource

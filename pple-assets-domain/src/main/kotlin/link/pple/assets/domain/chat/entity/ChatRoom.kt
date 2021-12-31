@@ -13,7 +13,7 @@ import javax.persistence.Table
 @Table(name = "chat_rooms")
 class ChatRoom private constructor(
 
-    var name: String,
+    var title: String,
 
     @Enumerated(EnumType.STRING)
     var status: Status
@@ -26,9 +26,9 @@ class ChatRoom private constructor(
     companion object {
 
         fun create(
-            name: String
+            title: String
         ) = ChatRoom(
-            name = name,
+            title = title,
             status = Status.ACTIVE
         )
     }

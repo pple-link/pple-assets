@@ -30,7 +30,7 @@ internal class ChatRoomQueryTest {
     fun `UUID 로 ChatRoom 을 조회할 수 있다`() {
         // given
         val chatRoom = ChatRoom.create(
-            name = "name"
+            title = "name"
         )
         every { chatRoomRepository.findByUuid(EXIST_CHATROOM_UUID) } returns chatRoom
 
@@ -39,15 +39,15 @@ internal class ChatRoomQueryTest {
 
         // then
         expectThat(actual) {
-            get { name } isEqualTo "name"
+            get { title } isEqualTo "name"
         }
     }
 
     @Test
     fun `ChatRoom 을 목록으로 조회할 수 있다`() {
         // given
-        val firstChatRoom = ChatRoom.create(name = "first")
-        val secondChatRoom = ChatRoom.create(name = "second")
+        val firstChatRoom = ChatRoom.create(title = "first")
+        val secondChatRoom = ChatRoom.create(title = "second")
         every { chatRoomRepository.findAll(EXIST_ACCOUNT_UUID, emptyList()) } returns listOf(
             firstChatRoom, secondChatRoom
         )
@@ -62,10 +62,10 @@ internal class ChatRoomQueryTest {
         expectThat(actual) {
             hasSize(2).and {
                 get(0).and {
-                    get { name } isEqualTo "first"
+                    get { title } isEqualTo "first"
                 }
                 get(1).and {
-                    get { name } isEqualTo "second"
+                    get { title } isEqualTo "second"
                 }
             }
         }

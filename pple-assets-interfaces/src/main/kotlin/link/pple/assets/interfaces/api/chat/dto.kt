@@ -62,7 +62,7 @@ data class ChatRoomConnectionDto(
 // ===============================
 
 internal fun ChatRoom.toDto() = ChatRoomDto(
-    name = name,
+    name = title,
     status = status.name
 ).entityData(this)
 
@@ -80,7 +80,7 @@ internal fun ChatRoomConnection.toDto() = ChatRoomConnectionDto(
 
 
 internal fun ChatRoomDefinitionDto.toDefinition() = ChatRoomDefinition(
-    name = name
+    title = name
 )
 
 internal fun ChatHistoryDefinitionDto.toDefinition() = ChatHistoryDefinition(

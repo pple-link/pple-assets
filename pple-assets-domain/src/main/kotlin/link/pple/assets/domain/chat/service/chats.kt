@@ -11,7 +11,7 @@ data class ChatHistoryDefinition(
 )
 
 data class ChatRoomDefinition(
-    val name: String
+    val title: String
 )
 
 data class ChatRoomConnectionDefinition(
