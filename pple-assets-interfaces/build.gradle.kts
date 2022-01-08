@@ -17,7 +17,7 @@ jib {
         image = "adoptopenjdk/openjdk11:jdk-11.0.10_9-debian"
     }
     to {
-        image = "pple-assets"
+        image = "pple_assets"
         tags = if ("prod" == System.getenv("ENV")) {
             setOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")))
         } else {

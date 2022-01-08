@@ -2,7 +2,8 @@ package link.pple.assets.interfaces.api.account
 
 import link.pple.assets.domain.Blood
 import link.pple.assets.domain.account.entity.Account
-import link.pple.assets.domain.account.service.AccountDefinition
+import link.pple.assets.domain.account.service.AccountApplyDefinition
+import link.pple.assets.domain.account.service.AccountCreateDefinition
 import link.pple.assets.interfaces.api.EntityDto
 import link.pple.assets.interfaces.api.entityData
 import java.time.LocalDate
@@ -11,7 +12,7 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
-data class AccountDefinitionDto(
+data class AccountCreateDefinitionDto(
 
     @NotNull
     @Valid
@@ -23,21 +24,8 @@ data class AccountDefinitionDto(
     @NotEmpty
     val displayName: String,
 
-    @NotNull
-    val birthDay: LocalDate,
-
     @NotEmpty
-    val gender: String,
-
-    @NotEmpty
-    val phoneNumber: String,
-
-    @NotEmpty
-    val profileImageUrl: String,
-
-    @NotNull
-    @Valid
-    val blood: BloodDto
+    val profileImageUrl: String?
 )
 
 data class AccountPatchDto(
@@ -48,17 +36,35 @@ data class AccountPatchDto(
     val profileImageUrl: String?
 )
 
+data class AccountApplyDefinitionDto(
+
+    @NotNull
+    val uuid: String,
+
+    @NotNull
+    val birthDay: LocalDate,
+
+    @NotEmpty
+    val gender: String,
+
+    @NotEmpty
+    val phoneNumber: String,
+    @NotNull
+    @Valid
+    val blood: BloodDto
+)
+
 // ===============================
 
 data class AccountDto(
     val key: ProviderKeyDto,
     val email: String,
     val displayName: String,
-    val birthDay: LocalDate,
-    val gender: String,
-    val phoneNumber: String,
+    val birthDay: LocalDate?,
+    val gender: String?,
+    val phoneNumber: String?,
     val profileImageUrl: String?,
-    val blood: BloodDto,
+    val blood: BloodDto?,
     val role: String,
     val status: String
 ) : EntityDto()
@@ -88,10 +94,10 @@ internal fun Account.toDto() = AccountDto(
     email = email,
     displayName = displayName,
     birthDay = birthDay,
-    gender = gender.name,
+    gender = gender?.name,
     phoneNumber = phoneNumber,
     profileImageUrl = profileImageUrl,
-    blood = blood.toDto(),
+    blood = blood?.toDto(),
     role = role.name,
     status = status.name
 ).entityData(this)
@@ -106,19 +112,20 @@ internal fun Blood.toDto() = BloodDto(
     rh = rh.name
 )
 
-internal fun AccountDefinitionDto.toDefinition() = AccountDefinition(
+internal fun AccountCreateDefinitionDto.toDefinition() = AccountCreateDefinition(
     key = Account.ProviderKey(
         id = key.id,
         type = Account.ProviderType.from(key.type)
     ),
     email = email,
     displayName = displayName,
+    profileImageUrl = profileImageUrl
+)
+
+internal fun AccountApplyDefinitionDto.toDefinition() = AccountApplyDefinition(
+    uuid = uuid,
     birthDay = birthDay,
     gender = Account.Gender.from(gender),
     phoneNumber = phoneNumber,
-    profileImageUrl = profileImageUrl,
-    blood = Blood(
-        abo = Blood.ABO.from(blood.abo),
-        rh = Blood.RH.from(blood.rh),
-    )
+    blood = Blood(abo = Blood.ABO.from(blood.abo), rh = Blood.RH.from(blood.rh))
 )

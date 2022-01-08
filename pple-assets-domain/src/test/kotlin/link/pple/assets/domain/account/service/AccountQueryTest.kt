@@ -4,7 +4,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import link.pple.assets.domain.Blood
 import link.pple.assets.domain.account.entity.Account
 import link.pple.assets.domain.account.repository.AccountRepository
 import org.junit.jupiter.api.Test
@@ -15,7 +14,6 @@ import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
-import java.time.LocalDate
 import java.util.*
 
 /**
@@ -33,36 +31,29 @@ internal class AccountQueryTest {
     @Test
     fun `email 로 Account 를 조회할 수 있다`() {
         // given
-        val email = "sun@example.com"
-        val birthDay = LocalDate.now()
-        every { accountRepository.findByEmail(email) } returns Account.create(
+        val insertEmail = "sun@example.com"
+        every { accountRepository.findByEmail(insertEmail) } returns Account.create(
             providerType = Account.ProviderType.KAKAO,
             providerAccountId = "1234",
-            email = email,
+            email = insertEmail,
             displayName = "Sun",
-            birthDay = birthDay,
-            gender = Account.Gender.MALE,
-            phoneNumber = "+821012345678",
-            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f",
-            blood = Blood(
-                abo = Blood.ABO.B,
-                rh = Blood.RH.POSITIVE
-            )
+            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f"
         )
 
         // when
-        val actual = sut.getByEmailOrNull(email)
+        val actual = sut.getByEmailOrNull(insertEmail)
 
         // then
         expectThat(actual).isNotNull()
             .and {
                 get { key } isEqualTo Account.ProviderKey(Account.ProviderType.KAKAO, "1234")
-                get { email } isEqualTo email
+                get { email } isEqualTo insertEmail
                 get { displayName } isEqualTo "Sun"
-                get { birthDay } isEqualTo birthDay
-                get { gender } isEqualTo Account.Gender.MALE
-                get { phoneNumber } isEqualTo "+821012345678"
-                get { blood } isEqualTo Blood(Blood.ABO.B, Blood.RH.POSITIVE)
+                get { profileImageUrl } isEqualTo "cdn.pple.link/a-b-c/d-e-f"
+                get { gender } isEqualTo null
+                get { birthDay } isEqualTo null
+                get { phoneNumber } isEqualTo null
+                get { blood } isEqualTo null
             }
     }
 
@@ -83,20 +74,12 @@ internal class AccountQueryTest {
     fun `id 로 Account 를 조회할 수 있다`() {
         // given
         val id = 42L
-        val birthDay = LocalDate.now()
         every { accountRepository.findByIdOrNull(id) } returns Account.create(
             providerType = Account.ProviderType.KAKAO,
             providerAccountId = "1234",
             email = "sun@example.com",
             displayName = "Sun",
-            birthDay = birthDay,
-            gender = Account.Gender.MALE,
-            phoneNumber = "+821000000000",
-            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f",
-            blood = Blood(
-                abo = Blood.ABO.B,
-                rh = Blood.RH.POSITIVE
-            )
+            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f"
         )
 
         // when
@@ -108,10 +91,11 @@ internal class AccountQueryTest {
                 get { key } isEqualTo Account.ProviderKey(Account.ProviderType.KAKAO, "1234")
                 get { email } isEqualTo "sun@example.com"
                 get { displayName } isEqualTo "Sun"
-                get { birthDay } isEqualTo birthDay
-                get { gender } isEqualTo Account.Gender.MALE
-                get { phoneNumber } isEqualTo "+821000000000"
-                get { blood } isEqualTo Blood(Blood.ABO.B, Blood.RH.POSITIVE)
+                get { profileImageUrl } isEqualTo "cdn.pple.link/a-b-c/d-e-f"
+                get { gender } isEqualTo null
+                get { birthDay } isEqualTo null
+                get { phoneNumber } isEqualTo null
+                get { blood } isEqualTo null
             }
     }
 
@@ -133,20 +117,12 @@ internal class AccountQueryTest {
     fun `uuid 로 Account 를 조회할 수 있다`() {
         // given
         val uuid = UUID.randomUUID()
-        val birthDay = LocalDate.now()
         every { accountRepository.findByUuid(uuid) } returns Account.create(
             providerType = Account.ProviderType.KAKAO,
             providerAccountId = "1234",
             email = "sun@example.com",
             displayName = "Sun",
-            birthDay = birthDay,
-            gender = Account.Gender.MALE,
-            phoneNumber = "+821000000000",
-            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f",
-            blood = Blood(
-                abo = Blood.ABO.B,
-                rh = Blood.RH.POSITIVE
-            )
+            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f"
         )
 
         // when
@@ -158,10 +134,11 @@ internal class AccountQueryTest {
                 get { key } isEqualTo Account.ProviderKey(Account.ProviderType.KAKAO, "1234")
                 get { email } isEqualTo "sun@example.com"
                 get { displayName } isEqualTo "Sun"
-                get { birthDay } isEqualTo birthDay
-                get { gender } isEqualTo Account.Gender.MALE
-                get { phoneNumber } isEqualTo "+821000000000"
-                get { blood } isEqualTo Blood(Blood.ABO.B, Blood.RH.POSITIVE)
+                get { profileImageUrl } isEqualTo "cdn.pple.link/a-b-c/d-e-f"
+                get { gender } isEqualTo null
+                get { birthDay } isEqualTo null
+                get { phoneNumber } isEqualTo null
+                get { blood } isEqualTo null
             }
     }
 

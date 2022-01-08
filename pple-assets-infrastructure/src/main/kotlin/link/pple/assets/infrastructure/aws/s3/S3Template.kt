@@ -75,7 +75,7 @@ class S3Template(
             listOf(
                 s3Client.copyObject { builder ->
                     builder.apply {
-                        copySource("$bucket/$it")
+                        copySourceIfMatch("$bucket/$it")
                         destinationBucket(bucket)
                         destinationKey(destinationPrefix + "/" + it.getOnlyFileName())
                     }

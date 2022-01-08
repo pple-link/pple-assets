@@ -16,13 +16,26 @@ class AccountCommand(
     private val accountQuery: AccountQuery
 ) {
 
-    fun create(definition: AccountDefinition): Account {
+    fun create(definition: AccountCreateDefinition): Account {
         val existAccount = accountQuery.getByEmailOrNull(definition.email)
         require(existAccount == null) { "이미 Account 가 존재합니다. $existAccount" }
 
         val account = Account.from(definition)
 
         return accountRepository.save(account)
+    }
+
+    fun apply(definition: AccountApplyDefinition): Account {
+        val account = accountQuery.getByUuid(definition.uuid)
+
+        val updatedAccount = account.apply(
+            birthDay = definition.birthDay,
+            gender = definition.gender,
+            phoneNumber = definition.phoneNumber,
+            blood = definition.blood
+        )
+
+        return accountRepository.save(updatedAccount)
     }
 
     fun update(accountId: Long, displayName: String, profileImageUrl: String): Account {

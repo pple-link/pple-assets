@@ -2,7 +2,7 @@ package link.pple.assets.domain.account.entity
 
 import link.pple.assets.configuration.jpa.BaseEntity
 import link.pple.assets.domain.Blood
-import link.pple.assets.domain.account.service.AccountDefinition
+import link.pple.assets.domain.account.service.AccountCreateDefinition
 import link.pple.assets.util.notNull
 import org.hibernate.annotations.Where
 import java.time.LocalDate
@@ -22,33 +22,27 @@ class Account private constructor(
 
     var displayName: String,
 
-    val birthDay: LocalDate,
-
-    @Enumerated(EnumType.STRING)
-    val gender: Gender,
-
-    val phoneNumber: String,
-
-    var profileImageUrl: String?,
-
-    @Embedded
-    val blood: Blood,
-
     @Enumerated(EnumType.STRING)
     val role: Role,
 
     @Where(clause = "status != 'DELETE'")
     @Enumerated(EnumType.STRING)
-    var status: Status
+    var status: Status,
+
+    // ====== optional ======
+    var birthDay: LocalDate? = null,
+
+    @Enumerated(EnumType.STRING)
+    var gender: Gender? = null,
+
+    var phoneNumber: String? = null,
+
+    var profileImageUrl: String? = null,
+
+    @Embedded
+    var blood: Blood? = null
 
 ) : BaseEntity() {
-
-    fun update(displayName: String, profileImageUrl: String?): Account {
-        this.displayName = displayName
-        this.profileImageUrl = profileImageUrl
-
-        return this
-    }
 
     enum class Gender {
         MALE, FEMALE;
@@ -61,7 +55,7 @@ class Account private constructor(
     }
 
     enum class Status {
-        ACTIVE, DELETE
+        TEMP, ACTIVE, DELETE
     }
 
     enum class Role {
@@ -89,6 +83,29 @@ class Account private constructor(
         val id: String
     )
 
+    fun update(
+        displayName: String,
+        profileImageUrl: String?
+    ): Account {
+        this.displayName = displayName
+        this.profileImageUrl = profileImageUrl
+
+        return this
+    }
+
+    fun apply(
+        birthDay: LocalDate,
+        gender: Gender,
+        phoneNumber: String,
+        blood: Blood
+    ): Account = this.apply {
+        this.birthDay = birthDay
+        this.gender = gender
+        this.phoneNumber = phoneNumber
+        this.blood = blood
+        this.status = Status.ACTIVE
+    }
+    
     companion object {
 
         fun create(
@@ -96,11 +113,7 @@ class Account private constructor(
             providerAccountId: String,
             email: String,
             displayName: String,
-            birthDay: LocalDate,
-            gender: Gender,
-            phoneNumber: String,
-            profileImageUrl: String,
-            blood: Blood
+            profileImageUrl: String?
         ) = Account(
             key = ProviderKey(
                 type = providerType,
@@ -108,26 +121,22 @@ class Account private constructor(
             ),
             email = email,
             displayName = displayName,
-            birthDay = birthDay,
-            gender = gender,
-            phoneNumber = phoneNumber,
             profileImageUrl = profileImageUrl,
-            blood = blood,
             role = Role.USER,
-            status = Status.ACTIVE
+            status = Status.TEMP,
+            birthDay = null,
+            gender = null,
+            phoneNumber = null,
+            blood = null
         )
 
-        fun from(definition: AccountDefinition): Account {
+        fun from(definition: AccountCreateDefinition): Account {
             return create(
                 providerType = definition.key.type,
                 providerAccountId = definition.key.id,
                 email = definition.email,
                 displayName = definition.displayName,
-                birthDay = definition.birthDay,
-                gender = definition.gender,
-                phoneNumber = definition.phoneNumber,
-                profileImageUrl = definition.profileImageUrl,
-                blood = definition.blood
+                profileImageUrl = definition.profileImageUrl
             )
         }
     }

@@ -5,7 +5,6 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
-import link.pple.assets.domain.Blood
 import link.pple.assets.domain.account.entity.Account
 import link.pple.assets.domain.account.repository.AccountRepository
 import org.junit.jupiter.api.Test
@@ -34,22 +33,15 @@ internal class AccountCommandTest {
     @Test
     fun `계정을 생성할 수 있다`() {
         // given
-        val birthDay = LocalDate.now()
-        val definition = AccountDefinition(
+        val insertBirthDay = LocalDate.now()
+        val definition = AccountCreateDefinition(
             key = Account.ProviderKey(
                 type = Account.ProviderType.KAKAO,
                 id = "1234"
             ),
             email = "college@kakao.com",
             displayName = "Sun",
-            birthDay = birthDay,
-            gender = Account.Gender.MALE,
-            phoneNumber = "+821012345678",
             profileImageUrl = "cdn.pple.link/a-b-c/d-e-f",
-            blood = Blood(
-                abo = Blood.ABO.B,
-                rh = Blood.RH.POSITIVE
-            )
         )
         every { accountQuery.getByEmailOrNull("college@kakao.com") } returns null
         every { accountRepository.save(any()) } returns Account.from(definition)
@@ -62,33 +54,25 @@ internal class AccountCommandTest {
             get { key } isEqualTo Account.ProviderKey(Account.ProviderType.KAKAO, "1234")
             get { email } isEqualTo "college@kakao.com"
             get { displayName } isEqualTo "Sun"
-            get { birthDay } isEqualTo birthDay
-            get { gender } isEqualTo Account.Gender.MALE
-            get { phoneNumber } isEqualTo "+821012345678"
             get { profileImageUrl } isEqualTo "cdn.pple.link/a-b-c/d-e-f"
-            get { blood } isEqualTo Blood(Blood.ABO.B, Blood.RH.POSITIVE)
+            get { phoneNumber } isEqualTo null
+            get { birthDay } isEqualTo null
+            get { gender } isEqualTo null
+            get { blood } isEqualTo null
         }
     }
 
     @Test
     fun `이미 존재하는 이메일로는 계정을 생성할 수 없다`() {
         // given
-        val birthDay = LocalDate.now()
-        val definition = AccountDefinition(
+        val definition = AccountCreateDefinition(
             key = Account.ProviderKey(
                 type = Account.ProviderType.KAKAO,
                 id = "1234"
             ),
             email = "college@kakao.com",
             displayName = "Sun",
-            birthDay = birthDay,
-            gender = Account.Gender.MALE,
-            phoneNumber = "+821012345678",
-            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f",
-            blood = Blood(
-                abo = Blood.ABO.B,
-                rh = Blood.RH.POSITIVE
-            )
+            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f"
         )
         val account = Account.from(definition)
         every { accountQuery.getByEmailOrNull("college@kakao.com") } returns account
@@ -103,22 +87,14 @@ internal class AccountCommandTest {
     @Test
     fun `id 로 계정 정보를 수정할 수 있다`() {
         // given
-        val birthDay = LocalDate.now()
-        val definition = AccountDefinition(
+        val definition = AccountCreateDefinition(
             key = Account.ProviderKey(
                 type = Account.ProviderType.KAKAO,
                 id = "1234"
             ),
             email = "college@kakao.com",
             displayName = "Sun",
-            birthDay = birthDay,
-            gender = Account.Gender.MALE,
-            phoneNumber = "+821012345678",
-            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f",
-            blood = Blood(
-                abo = Blood.ABO.B,
-                rh = Blood.RH.POSITIVE
-            )
+            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f"
         )
         val account = Account.from(definition)
         every { accountQuery.getById(EXIST_ACCOUNT_ID) } returns account
@@ -139,33 +115,25 @@ internal class AccountCommandTest {
             get { key } isEqualTo Account.ProviderKey(Account.ProviderType.KAKAO, "1234")
             get { email } isEqualTo "college@kakao.com"
             get { displayName } isEqualTo "modified"
-            get { birthDay } isEqualTo birthDay
-            get { gender } isEqualTo Account.Gender.MALE
-            get { phoneNumber } isEqualTo "+821012345678"
             get { profileImageUrl } isEqualTo "modified"
-            get { blood } isEqualTo Blood(Blood.ABO.B, Blood.RH.POSITIVE)
+            get { gender } isEqualTo null
+            get { birthDay } isEqualTo null
+            get { phoneNumber } isEqualTo null
+            get { blood } isEqualTo null
         }
     }
 
     @Test
     fun `uuid 로 계정 정보를 수정할 수 있다`() {
         // given
-        val birthDay = LocalDate.now()
-        val definition = AccountDefinition(
+        val definition = AccountCreateDefinition(
             key = Account.ProviderKey(
                 type = Account.ProviderType.KAKAO,
                 id = "1234"
             ),
             email = "college@kakao.com",
             displayName = "Sun",
-            birthDay = birthDay,
-            gender = Account.Gender.MALE,
-            phoneNumber = "+821012345678",
-            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f",
-            blood = Blood(
-                abo = Blood.ABO.B,
-                rh = Blood.RH.POSITIVE
-            )
+            profileImageUrl = "cdn.pple.link/a-b-c/d-e-f"
         )
         val account = Account.from(definition)
         every { accountQuery.getByUuid(EXIST_ACCOUNT_UUID.toString()) } returns account
@@ -186,11 +154,11 @@ internal class AccountCommandTest {
             get { key } isEqualTo Account.ProviderKey(Account.ProviderType.KAKAO, "1234")
             get { email } isEqualTo "college@kakao.com"
             get { displayName } isEqualTo "modified"
-            get { birthDay } isEqualTo birthDay
-            get { gender } isEqualTo Account.Gender.MALE
-            get { phoneNumber } isEqualTo "+821012345678"
             get { profileImageUrl } isEqualTo "modified"
-            get { blood } isEqualTo Blood(Blood.ABO.B, Blood.RH.POSITIVE)
+            get { gender } isEqualTo null
+            get { birthDay } isEqualTo null
+            get { phoneNumber } isEqualTo null
+            get { blood } isEqualTo null
         }
     }
 

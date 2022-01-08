@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    image: 106380540986.dkr.ecr.ap-northeast-2.amazonaws.com/pple-assets:latest
+    image: 106380540986.dkr.ecr.ap-northeast-2.amazonaws.com/pple-assets-dev:latest
     container_name: pple_assets
     ports:
       - "10002:10002"

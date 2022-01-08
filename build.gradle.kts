@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     base
@@ -74,6 +75,12 @@ subprojects {
         }
         testImplementation("io.strikt:strikt-core:0.33.0")
     }
+
+    val jar: Jar by tasks
+    val bootJar: BootJar by tasks
+
+    bootJar.enabled = false
+    jar.enabled = true
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {

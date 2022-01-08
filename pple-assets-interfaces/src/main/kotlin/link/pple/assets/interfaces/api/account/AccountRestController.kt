@@ -36,7 +36,7 @@ class AccountRestController(
     }
 
     /**
-     * 회원 가입
+     * 회원 가입: OAuth2 최초 인증, 계정에 추가 정보 없음
      * @Author Heli
      */
     @PostMapping(
@@ -45,12 +45,30 @@ class AccountRestController(
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun createAccount(
-        @RequestBody @Valid definitionDto: AccountDefinitionDto
+        @RequestBody @Valid definitionDto: AccountCreateDefinitionDto
     ): AccountDto {
         val definition = definitionDto.toDefinition()
         val account = accountCommand.create(definition)
         return account.toDto()
     }
+
+    /**
+     * 회원 가입: OAuth2 가입 후 추가 정보 입력
+     * @Author Heli
+     */
+    @PatchMapping(
+        value = ["/account/api/v1/account"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun applyAccount(
+        @RequestBody @Valid dto: AccountApplyDefinitionDto
+    ): AccountDto {
+        val definition = dto.toDefinition()
+        val account = accountCommand.apply(definition)
+        return account.toDto()
+    }
+
 
     /**
      * 회원 정보 수정(DisplayName, ProfileImageUrl)
@@ -75,5 +93,4 @@ class AccountRestController(
 
         return account.toDto()
     }
-
 }

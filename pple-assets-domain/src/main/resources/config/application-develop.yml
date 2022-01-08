@@ -2,16 +2,18 @@ spring:
   config:
     activate:
       on-profile: develop
-
-#pple:
-#  datasource:
-#    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerMySQLDriver
-#    url: jdbc-secretsmanager:mysql://pple-assets-dev.cvp9gzbh38vp.ap-northeast-2.rds.amazonaws.com:3306/pple_assets?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
-#    username: pple-assets-dev
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
 
 pple:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:13306/pple-assets?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
-    username: root
-    password: root
+    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerMySQLDriver
+    url: jdbc-secretsmanager:mysql://pple-assets-dev.cvp9gzbh38vp.ap-northeast-2.rds.amazonaws.com:3306/pple-assets?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
+    username: /secret/pple-assets-rds/account_develop
+
+#pple:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:13306/pple-assets?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
+#    username: root
+#    password: root
