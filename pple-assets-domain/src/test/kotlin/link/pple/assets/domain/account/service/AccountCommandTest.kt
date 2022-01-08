@@ -142,8 +142,7 @@ internal class AccountCommandTest {
         // when
         val actual = sut.update(
             uuid = EXIST_ACCOUNT_UUID.toString(),
-            displayName = "modified",
-            profileImageUrl = "modified"
+            displayName = "modified"
         )
 
         // then
@@ -154,7 +153,6 @@ internal class AccountCommandTest {
             get { key } isEqualTo Account.ProviderKey(Account.ProviderType.KAKAO, "1234")
             get { email } isEqualTo "college@kakao.com"
             get { displayName } isEqualTo "modified"
-            get { profileImageUrl } isEqualTo "modified"
             get { gender } isEqualTo null
             get { birthDay } isEqualTo null
             get { phoneNumber } isEqualTo null

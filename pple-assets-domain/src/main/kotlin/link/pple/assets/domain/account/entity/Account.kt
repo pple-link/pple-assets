@@ -85,10 +85,10 @@ class Account private constructor(
 
     fun update(
         displayName: String,
-        profileImageUrl: String?
+        profileImageUrl: String? = null
     ): Account {
         this.displayName = displayName
-        this.profileImageUrl = profileImageUrl
+        this.profileImageUrl = profileImageUrl ?: this.profileImageUrl
 
         return this
     }
@@ -105,7 +105,7 @@ class Account private constructor(
         this.blood = blood
         this.status = Status.ACTIVE
     }
-    
+
     companion object {
 
         fun create(

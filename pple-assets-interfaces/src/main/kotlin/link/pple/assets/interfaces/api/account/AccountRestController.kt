@@ -105,8 +105,7 @@ class AccountRestController(
 
         val account = accountCommand.update(
             uuid = accountUuid,
-            displayName = definitionDto.displayName,
-            profileImageUrl = definitionDto.profileImageUrl
+            displayName = definitionDto.displayName
         )
 
         return account.toDto()

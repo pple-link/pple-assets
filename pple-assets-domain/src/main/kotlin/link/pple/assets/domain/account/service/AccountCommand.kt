@@ -44,10 +44,10 @@ class AccountCommand(
         return update(account = account, displayName = displayName, profileImageUrl = profileImageUrl)
     }
 
-    fun update(uuid: String, displayName: String, profileImageUrl: String?): Account {
+    fun update(uuid: String, displayName: String): Account {
         val account = accountQuery.getByUuid(uuid)
 
-        return update(account = account, displayName = displayName, profileImageUrl = profileImageUrl)
+        return update(account = account, displayName = displayName, profileImageUrl = null)
     }
 
     private fun update(account: Account, displayName: String, profileImageUrl: String?): Account {
