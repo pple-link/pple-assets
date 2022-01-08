@@ -27,7 +27,6 @@ class AccountRestController(
         value = ["/account/api/v1/account/{accountUuid}"],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    @AuditingApi
     fun getAccount(
         @PathVariable accountUuid: String
     ): AccountDto {
@@ -44,6 +43,7 @@ class AccountRestController(
         value = ["/account/api/v1/account"],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
+//    @AuditingApi
     fun getAccountByEmail(
         @RequestParam @Email email: String
     ): AccountDto? {
@@ -78,6 +78,7 @@ class AccountRestController(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
+    @AuditingApi
     fun applyAccount(
         @RequestBody @Valid dto: AccountApplyDefinitionDto
     ): AccountDto {
