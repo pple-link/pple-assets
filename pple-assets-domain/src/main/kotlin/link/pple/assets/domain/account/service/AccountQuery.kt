@@ -16,7 +16,7 @@ class AccountQuery(
 ) {
 
     fun getByEmailOrNull(email: String): Account? {
-        return accountRepository.findByEmail(email)
+        return accountRepository.findByEmailAndStatusIn(email = email)
     }
 
     fun getById(accountId: Long): Account {

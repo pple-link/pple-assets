@@ -32,7 +32,7 @@ internal class AccountQueryTest {
     fun `email 로 Account 를 조회할 수 있다`() {
         // given
         val insertEmail = "sun@example.com"
-        every { accountRepository.findByEmail(insertEmail) } returns Account.create(
+        every { accountRepository.findByEmailAndStatusIn(insertEmail) } returns Account.create(
             providerType = Account.ProviderType.KAKAO,
             providerAccountId = "1234",
             email = insertEmail,
@@ -61,7 +61,7 @@ internal class AccountQueryTest {
     fun `조회 하려는 email 이 없으면 null 을 반환한다`() {
         // given
         val email = "sun@example.com"
-        every { accountRepository.findByEmail(email) } returns null
+        every { accountRepository.findByEmailAndStatusIn(email) } returns null
 
         // when
         val actual = sut.getByEmailOrNull(email)

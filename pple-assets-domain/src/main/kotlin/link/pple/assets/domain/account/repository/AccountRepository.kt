@@ -9,7 +9,10 @@ import java.util.*
  */
 interface AccountRepository : JpaRepository<Account, Long> {
 
-    fun findByEmail(email: String): Account?
+    fun findByEmailAndStatusIn(
+        email: String,
+        status: List<Account.Status> = listOf(Account.Status.ACTIVE, Account.Status.TEMP)
+    ): Account?
 
     fun findByUuid(uuid: UUID): Account?
 }
