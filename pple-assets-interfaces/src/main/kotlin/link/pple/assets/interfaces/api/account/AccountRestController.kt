@@ -7,6 +7,7 @@ import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
+import javax.validation.constraints.Email
 
 /**
  * @Author Heli
@@ -33,6 +34,22 @@ class AccountRestController(
         val account = accountQuery.getByUuid(accountUuid)
 
         return account.toDto()
+    }
+
+    /**
+     * Email 로 회원 정보 조회
+     * @Author Heli
+     */
+    @GetMapping(
+        value = ["/account/api/v1/account"],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun getAccountByEmail(
+        @RequestParam @Email email: String
+    ): AccountDto? {
+        val account = accountQuery.getByEmailOrNull(email)
+
+        return account?.toDto()
     }
 
     /**
