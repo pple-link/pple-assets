@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class DonationCommand(
     private val donationRepository: DonationRepository,
+    private val donationQuery: DonationQuery,
     private val patientCommand: PatientCommand
 ) {
 
@@ -25,10 +26,17 @@ class DonationCommand(
         val donation = Donation.create(
             title = definition.title,
             content = definition.content,
+            bloodProduct = definition.bloodProduct,
             patient = newPatient,
-            needCount = definition.needCount
+            phoneNumber = definition.phoneNumber
         )
 
         return donationRepository.save(donation)
+    }
+
+    fun renew(donationUuid: String): Donation {
+        val donation = donationQuery.getByUuid(donationUuid)
+
+        return donationRepository.save(donation.renew())
     }
 }

@@ -5,6 +5,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import link.pple.assets.domain.Blood
 import link.pple.assets.domain.donation.entity.Donation
 import link.pple.assets.domain.donation.repository.DonationRepository
 import org.junit.jupiter.api.Test
@@ -34,11 +35,18 @@ internal class DonationQueryTest {
     fun `Uuid 로 Donation 을 조회할 수 있다`() {
         // given
         val uuid = UUID.randomUUID()
-        every { donationRepository.findByUuid(uuid) } returns Donation.create(
+        every { donationRepository.load(uuid) } returns Donation.create(
             title = "Title",
             content = "Content",
+            bloodProduct = listOf(
+                Blood.Product.WHOLE,
+                Blood.Product.PLATELET,
+                Blood.Product.LEUKOCYTE,
+                Blood.Product.PACKED_RED_BLOOD_CELL,
+                Blood.Product.LEUKOCYTE_REDUCED_RED_BLOOD_CELL
+            ),
             patient = mockk(),
-            needCount = 5L
+            phoneNumber = "01096081327"
         )
 
         // when
@@ -48,8 +56,15 @@ internal class DonationQueryTest {
         expectThat(actual) {
             get { title } isEqualTo "Title"
             get { content } isEqualTo "Content"
+            get { bloodProduct } isEqualTo listOf(
+                Blood.Product.WHOLE,
+                Blood.Product.PLATELET,
+                Blood.Product.LEUKOCYTE,
+                Blood.Product.PACKED_RED_BLOOD_CELL,
+                Blood.Product.LEUKOCYTE_REDUCED_RED_BLOOD_CELL
+            )
             get { patient } isNotEqualTo null
-            get { needCount } isEqualTo 5L
+            get { phoneNumber } isEqualTo "01096081327"
         }
     }
 
@@ -58,7 +73,7 @@ internal class DonationQueryTest {
     fun `존재 하지 않는 id 로 Donation 을 조회 시 에러가 발생한다`() {
         // given
         val uuid = UUID.randomUUID()
-        every { donationRepository.findByUuid(uuid) } returns null
+        every { donationRepository.load(uuid) } returns null
 
         // when
 
@@ -74,8 +89,15 @@ internal class DonationQueryTest {
         val firstDonation = Donation.create(
             title = "title",
             content = "content",
+            bloodProduct = listOf(
+                Blood.Product.WHOLE,
+                Blood.Product.PLATELET,
+                Blood.Product.LEUKOCYTE,
+                Blood.Product.PACKED_RED_BLOOD_CELL,
+                Blood.Product.LEUKOCYTE_REDUCED_RED_BLOOD_CELL
+            ),
             patient = mockk(),
-            needCount = 5L
+            phoneNumber = "01096081327"
         )
         val donations = listOf(firstDonation)
         val donationPages = PageImpl(donations, Pageable.ofSize(10), donations.size.toLong())
@@ -94,8 +116,15 @@ internal class DonationQueryTest {
                 get(0).and {
                     get { title } isEqualTo "title"
                     get { content } isEqualTo "content"
+                    get { bloodProduct } isEqualTo listOf(
+                        Blood.Product.WHOLE,
+                        Blood.Product.PLATELET,
+                        Blood.Product.LEUKOCYTE,
+                        Blood.Product.PACKED_RED_BLOOD_CELL,
+                        Blood.Product.LEUKOCYTE_REDUCED_RED_BLOOD_CELL
+                    )
                     get { patient } isNotEqualTo null
-                    get { needCount } isEqualTo 5L
+                    get { phoneNumber } isEqualTo "01096081327"
                 }
             }
         }

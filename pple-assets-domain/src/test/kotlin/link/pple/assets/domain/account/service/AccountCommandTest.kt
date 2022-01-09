@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
-import java.time.LocalDate
 import java.util.*
 
 /**
@@ -33,7 +32,6 @@ internal class AccountCommandTest {
     @Test
     fun `계정을 생성할 수 있다`() {
         // given
-        val insertBirthDay = LocalDate.now()
         val definition = AccountCreateDefinition(
             key = Account.ProviderKey(
                 type = Account.ProviderType.KAKAO,

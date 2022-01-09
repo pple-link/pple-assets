@@ -5,6 +5,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import link.pple.assets.domain.Blood
 import link.pple.assets.domain.appreciation.entity.Appreciation
 import link.pple.assets.domain.appreciation.repository.AppreciationRepository
 import link.pple.assets.domain.donation.entity.Donation
@@ -40,8 +41,15 @@ internal class AppreciationCommandTest {
         val donation = Donation.create(
             title = "title",
             content = "content",
+            bloodProduct = listOf(
+                Blood.Product.WHOLE,
+                Blood.Product.PLATELET,
+                Blood.Product.LEUKOCYTE,
+                Blood.Product.PACKED_RED_BLOOD_CELL,
+                Blood.Product.LEUKOCYTE_REDUCED_RED_BLOOD_CELL
+            ),
             patient = mockk(),
-            needCount = 5L
+            phoneNumber = "01096081327"
         )
         every { donationQuery.getByUuid(EXIST_DONATION_UUID) } returns donation
         every { appreciationRepository.save(any()) } returns Appreciation.create(
@@ -58,8 +66,15 @@ internal class AppreciationCommandTest {
             get { donation }.and {
                 get { title } isEqualTo "title"
                 get { content } isEqualTo "content"
+                get { bloodProduct } isEqualTo listOf(
+                    Blood.Product.WHOLE,
+                    Blood.Product.PLATELET,
+                    Blood.Product.LEUKOCYTE,
+                    Blood.Product.PACKED_RED_BLOOD_CELL,
+                    Blood.Product.LEUKOCYTE_REDUCED_RED_BLOOD_CELL
+                )
                 get { patient } isNotEqualTo null
-                get { needCount } isEqualTo 5L
+                get { phoneNumber } isEqualTo "01096081327"
             }
         }
     }

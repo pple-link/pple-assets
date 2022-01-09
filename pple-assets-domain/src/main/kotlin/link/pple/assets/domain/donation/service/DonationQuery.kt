@@ -17,7 +17,7 @@ class DonationQuery(
 ) {
 
     fun getByUuid(donationUuid: String): Donation {
-        return donationRepository.findByUuid(donationUuid.toUUID())
+        return donationRepository.load(donationUuid.toUUID())
             .notNull { "Donation 을 찾을 수 없음 [$donationUuid]" }
     }
 

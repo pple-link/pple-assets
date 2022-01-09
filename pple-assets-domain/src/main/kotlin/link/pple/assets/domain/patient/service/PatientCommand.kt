@@ -18,12 +18,7 @@ class PatientCommand(
     fun create(definition: PatientDefinition): Patient {
 
         val patient = Patient.create(
-            name = definition.name,
-            birthDay = definition.birthDay,
-            blood = definition.blood,
-            registrationIdentifier = definition.registrationIdentifier,
-            medicalFacilityName = definition.medicalFacilityName,
-            medicalFacilityRoom = definition.medicalFacilityRoom
+            blood = definition.blood
         )
 
         return patientRepository.save(patient)

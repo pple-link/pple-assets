@@ -5,6 +5,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import link.pple.assets.domain.Blood
+import link.pple.assets.domain.Blood.Product.*
 import link.pple.assets.domain.donation.entity.Donation
 import link.pple.assets.domain.donation.repository.DonationRepository
 import link.pple.assets.domain.patient.entity.Patient
@@ -39,29 +40,27 @@ internal class DonationCommandTest {
         val definition = DonationDefinition(
             title = "title",
             content = "content",
-            patient = PatientDefinition(
-                name = "name",
-                birthDay = patientBirthDay,
-                blood = Blood(abo = Blood.ABO.B, rh = Blood.RH.POSITIVE),
-                registrationIdentifier = "identifier",
-                medicalFacilityName = "facilityName",
-                medicalFacilityRoom = "facilityRoom"
+            bloodProduct = listOf(
+                WHOLE,
+                PLATELET,
+                LEUKOCYTE,
+                PACKED_RED_BLOOD_CELL,
+                LEUKOCYTE_REDUCED_RED_BLOOD_CELL
             ),
-            needCount = 5L
+            patient = PatientDefinition(
+                blood = Blood(abo = Blood.ABO.B, rh = Blood.RH.POSITIVE),
+            ),
+            phoneNumber = "01096081327"
         )
         val patient = Patient.create(
-            name = definition.patient.name,
-            birthDay = definition.patient.birthDay,
             blood = definition.patient.blood,
-            registrationIdentifier = definition.patient.registrationIdentifier,
-            medicalFacilityName = definition.patient.medicalFacilityName,
-            medicalFacilityRoom = definition.patient.medicalFacilityRoom
         )
         val donation = Donation.create(
             title = definition.title,
             content = definition.content,
+            bloodProduct = definition.bloodProduct,
             patient = patient,
-            needCount = definition.needCount
+            phoneNumber = definition.phoneNumber
         )
         every { patientCommand.create(definition.patient) } returns patient
         every { donationRepository.save(any()) } returns donation
@@ -73,16 +72,18 @@ internal class DonationCommandTest {
         expectThat(actual) {
             get { title } isEqualTo "title"
             get { content } isEqualTo "content"
+            get { bloodProduct } isEqualTo listOf(
+                WHOLE,
+                PLATELET,
+                LEUKOCYTE,
+                PACKED_RED_BLOOD_CELL,
+                LEUKOCYTE_REDUCED_RED_BLOOD_CELL
+            )
             get { patient }.isNotEqualTo(null).and {
-                get { name } isEqualTo "name"
-                get { birthDay } isEqualTo patientBirthDay
                 get { blood } isEqualTo Blood(abo = Blood.ABO.B, rh = Blood.RH.POSITIVE)
-                get { registrationIdentifier } isEqualTo "identifier"
-                get { medicalFacilityName } isEqualTo "facilityName"
-                get { medicalFacilityRoom } isEqualTo "facilityRoom"
                 get { status } isEqualTo Patient.Status.ACTIVE
             }
-            get { needCount } isEqualTo 5L
+            get { phoneNumber } isEqualTo "01096081327"
         }
     }
 }
