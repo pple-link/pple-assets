@@ -9,14 +9,17 @@ CREATE TABLE `donations`
 
     `title`             VARCHAR(128) NOT NULL COMMENT 'title',
     `content`           TEXT         NOT NULL COMMENT 'content',
+    `bloodProduct`      VARCHAR(160) NOT NULL COMMENT 'bloodProduct',
     `patientId`         BIGINT       NOT NULL COMMENT 'patientId',
+    `phoneNumber`       VARCHAR(64)  NOT NULL COMMENT 'phoneNumber',
     `status`            VARCHAR(64)  NOT NULL COMMENT 'status',
-
-    `needCount`         BIGINT NULL COMMENT 'needCount',
+    `lastRenewedAt`     DATETIME(6) NULL COMMENT 'lastRenewedAt',
+    `renewedCount`      BIGINT       NOT NULL COMMENT 'renewedCount',
 
     PRIMARY KEY (`id`),
     KEY                 donations_idx01 (`createdAt`),
     KEY                 donations_idx02 (`uuid`),
-    KEY                 donations_idx03 (`title`),
-    KEY                 donations_idx04 (`status`)
+    KEY                 donations_idx03 (`title`, `status`),
+    KEY                 donations_idx04 (`bloodProduct`, `status`),
+    KEY                 donations_idx05 (`status`)
 ) ENGINE = InnoDB;
