@@ -16,7 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
-import java.time.LocalDate
 
 /**
  * @Author Heli
@@ -28,6 +27,9 @@ internal class DonationCommandTest {
     private lateinit var donationRepository: DonationRepository
 
     @MockK
+    private lateinit var donationQuery: DonationQuery
+
+    @MockK
     private lateinit var patientCommand: PatientCommand
 
     @InjectMockKs
@@ -36,7 +38,6 @@ internal class DonationCommandTest {
     @Test
     fun `Donation 을 생성할 수 있다`() {
         // given
-        val patientBirthDay = LocalDate.now()
         val definition = DonationDefinition(
             title = "title",
             content = "content",
