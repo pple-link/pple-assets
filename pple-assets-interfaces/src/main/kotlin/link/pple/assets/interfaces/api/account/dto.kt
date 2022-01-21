@@ -41,6 +41,9 @@ data class AccountApplyDefinitionDto(
     @NotNull
     val uuid: String,
 
+    @NotEmpty
+    val displayName: String,
+
     @NotNull
     val birthDay: LocalDate,
 
@@ -124,6 +127,7 @@ internal fun AccountCreateDefinitionDto.toDefinition() = AccountCreateDefinition
 
 internal fun AccountApplyDefinitionDto.toDefinition() = AccountApplyDefinition(
     uuid = uuid,
+    displayName = displayName,
     birthDay = birthDay,
     gender = Account.Gender.from(gender),
     phoneNumber = phoneNumber,

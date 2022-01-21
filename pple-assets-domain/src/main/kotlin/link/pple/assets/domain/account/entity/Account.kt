@@ -94,11 +94,13 @@ class Account private constructor(
     }
 
     fun apply(
+        displayName: String,
         birthDay: LocalDate,
         gender: Gender,
         phoneNumber: String,
         blood: Blood
     ): Account = this.apply {
+        this.displayName = displayName
         this.birthDay = birthDay
         this.gender = gender
         this.phoneNumber = phoneNumber

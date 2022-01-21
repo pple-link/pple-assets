@@ -13,6 +13,7 @@ data class AccountCreateDefinition(
 
 data class AccountApplyDefinition(
     val uuid: String,
+    val displayName: String,
     val birthDay: LocalDate,
     val gender: Account.Gender,
     val phoneNumber: String,

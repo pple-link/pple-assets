@@ -29,6 +29,7 @@ class AccountCommand(
         val account = accountQuery.getByUuid(definition.uuid)
 
         val updatedAccount = account.apply(
+            displayName = definition.displayName,
             birthDay = definition.birthDay,
             gender = definition.gender,
             phoneNumber = definition.phoneNumber,
