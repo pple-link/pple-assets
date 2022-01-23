@@ -7,7 +7,3 @@ aws:
     profile-separator: _
     enabled: true
     default-context: application
-cloud:
-  aws:
-    region:
-      static: ap-northeast-2

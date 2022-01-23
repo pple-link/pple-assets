@@ -8,7 +8,7 @@ plugins {
 dependencies {
     implementation(project(":pple-assets-domain"))
 
-    implementation("org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.3")
+    implementation("org.springframework.cloud:spring-cloud-starter-bootstrap:3.1.0")
     implementation("org.springframework.cloud:spring-cloud-starter-aws-secrets-manager-config:2.2.6.RELEASE")
 }
 

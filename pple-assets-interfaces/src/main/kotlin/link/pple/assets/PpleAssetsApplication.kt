@@ -8,6 +8,15 @@ import org.springframework.web.bind.annotation.RestController
 
 @SpringBootApplication
 class PpleAssetsApplication
+//    (
+//    private val smsClient: SmsClient
+//) {
+//
+//    @PostConstruct
+//    fun init() {
+//        smsClient.sendOne()
+//    }
+//}
 
 fun main(args: Array<String>) {
     runApplication<PpleAssetsApplication>(*args)
