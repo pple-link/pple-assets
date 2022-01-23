@@ -36,6 +36,6 @@ object AuditorHolder {
 
 internal class ThreadLocalAuditorAware : AuditorAware<Auditor> {
     override fun getCurrentAuditor(): Optional<Auditor> {
-        return Optional.of(AuditorHolder.get())
+        return Optional.ofNullable(AuditorHolder.getOrNull())
     }
 }

@@ -17,7 +17,7 @@ class ProfileImageUploader(
     private val s3Template: S3Template
 ) {
 
-    @Value("\${aws.s3.bucket}")
+    @Value("\${aws.s3.bucket:}")
     private lateinit var bucket: String
 
     fun upload(multipartFile: MultipartFile): S3UploadResponse {
