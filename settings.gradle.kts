@@ -21,3 +21,4 @@ rootProject.name = "pple-assets"
 include("pple-assets-infrastructure")
 include("pple-assets-domain")
 include("pple-assets-interfaces")
+include("pple-assets-batch")

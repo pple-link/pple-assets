@@ -58,6 +58,9 @@ subprojects {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
+        implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+
+        implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         runtimeOnly("mysql:mysql-connector-java")
