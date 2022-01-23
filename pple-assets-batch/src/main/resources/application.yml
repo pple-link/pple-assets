@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: develop
+  jpa:
+    open-in-view: false
+spring.batch.initialize-schema: always

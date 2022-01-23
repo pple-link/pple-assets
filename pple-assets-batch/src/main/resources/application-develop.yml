@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: develop
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+
+pple:
+  batch:
+    datasource:
+      driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerMySQLDriver
+      url: jdbc-secretsmanager:mysql://pple-assets-dev.cvp9gzbh38vp.ap-northeast-2.rds.amazonaws.com:3306/pple-assets-batch?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
+      username: /secret/pple-assets-rds/account_develop
+      hikari:
+        maximum-pool-size: 3

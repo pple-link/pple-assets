@@ -1,0 +1,9 @@
+aws:
+  secretsmanager:
+    prefix: /secret
+    name: pple-assets
+    fail-fast: true
+    region: ap-northeast-2
+    profile-separator: _
+    enabled: true
+    default-context: application
