@@ -101,11 +101,18 @@ internal class DonationQueryTest {
         )
         val donations = listOf(firstDonation)
         val donationPages = PageImpl(donations, Pageable.ofSize(10), donations.size.toLong())
-        every { donationRepository.load(emptyList(), pageable = Pageable.ofSize(10)) } returns donationPages
+        every {
+            donationRepository.load(
+                emptyList(),
+                createdAuditor = null,
+                pageable = Pageable.ofSize(10)
+            )
+        } returns donationPages
 
         // when
         val actual = sut.getExecutionPage(
             status = emptyList(),
+            createdAuditor = null,
             pageable = Pageable.ofSize(10)
         )
 
