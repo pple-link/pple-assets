@@ -1,5 +1,6 @@
 package link.pple.assets.domain.donation.service
 
+import link.pple.assets.configuration.jpa.Auditor
 import link.pple.assets.domain.donation.entity.Donation
 import link.pple.assets.domain.donation.repository.DonationRepository
 import link.pple.assets.infrastructure.util.toUUID
@@ -23,10 +24,12 @@ class DonationQuery(
 
     fun getExecutionPage(
         status: List<Donation.Status>?,
+        createdAuditor: Auditor?,
         pageable: Pageable
     ): Page<Donation> {
         return donationRepository.load(
             status = status,
+            createdAuditor = createdAuditor,
             pageable = pageable
         )
     }

@@ -1,6 +1,7 @@
 package link.pple.assets.interfaces.api.donation
 
 import link.pple.assets.configuration.auditor.AuditingApi
+import link.pple.assets.configuration.jpa.AuditorHolder
 import link.pple.assets.domain.donation.entity.Donation
 import link.pple.assets.domain.donation.service.DonationCommand
 import link.pple.assets.domain.donation.service.DonationQuery
@@ -68,6 +69,29 @@ class DonationRestController(
 
         val donations = donationQuery.getExecutionPage(
             status = executionStatus,
+            createdAuditor = null,
+            pageable = pageable
+        )
+        return donations.pagedDto { it.toDto() }
+    }
+
+    @GetMapping(
+        value = ["/donation/api/v1/donation/own"],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @AuditingApi
+    fun getDonationsByOwn(
+        @RequestParam(required = false) status: List<String>?,
+        @PageableDefault pageable: Pageable
+    ): PagedDto<DonationDto> {
+
+        val executionStatus = status?.map { Donation.Status.from(it) }
+
+        val auditor = AuditorHolder.get()
+
+        val donations = donationQuery.getExecutionPage(
+            status = executionStatus,
+            createdAuditor = auditor,
             pageable = pageable
         )
         return donations.pagedDto { it.toDto() }
