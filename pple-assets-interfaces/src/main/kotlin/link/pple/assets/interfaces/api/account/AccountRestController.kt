@@ -40,11 +40,11 @@ class AccountRestController(
      * @Author Heli
      */
     @GetMapping(
-        value = ["/account/api/v1/account"],
+        value = ["/account/api/v1/account/id/{accountId}"],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun getAccountById(
-        @RequestParam accountId: Long
+        @PathVariable accountId: Long
     ): AccountDto {
         val account = accountQuery.getById(accountId)
 
