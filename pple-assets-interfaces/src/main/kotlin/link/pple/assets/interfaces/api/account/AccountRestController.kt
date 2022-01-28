@@ -46,9 +46,25 @@ class AccountRestController(
     fun getAccountById(
         @PathVariable accountId: Long
     ): AccountDto {
-        val account = accountQuery.getById(accountId)
-
-        return account.toDto()
+        return when (accountId) {
+            -1L -> {
+                AccountDto(
+                    key = ProviderKeyDto("SYSTEM", "SYSTEM"),
+                    email = "SYSTEM",
+                    displayName = "SYSTEM",
+                    birthDay = null,
+                    gender = null,
+                    phoneNumber = null,
+                    profileImageUrl = null,
+                    blood = null,
+                    role = "ADMIN",
+                    status = "ACTIVE"
+                )
+            }
+            else -> {
+                accountQuery.getById(accountId).toDto()
+            }
+        }
     }
 
     /**
